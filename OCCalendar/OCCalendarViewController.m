@@ -29,7 +29,6 @@
 - (void)loadView {
     [super loadView];
     self.view.frame = parentView.frame;
-    [parentView addSubview:self.view];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -61,7 +60,6 @@
     calView = nil;
     
     [self.delegate completedWithStartDate:startDate endDate:endDate];
-    [self.view removeFromSuperview];
 }
 
 

@@ -53,6 +53,7 @@
     //Here's where the magic happens
     calVC = [[OCCalendarViewController alloc] initAtPoint:CGPointMake(150, 50) inView:self.view];
     calVC.delegate = self;
+    [self.view addSubview:calVC.view];
 }
 
 
@@ -64,6 +65,8 @@
     [df setDateStyle:NSDateFormatterShortStyle];
     
     [self showToolTip:[NSString stringWithFormat:@"%@ - %@", [df stringFromDate:startDate], [df stringFromDate:endDate]]];
+    
+    [calVC.view removeFromSuperview];
     
     calVC.delegate = nil;
     [calVC release];
@@ -123,6 +126,7 @@
     
     calVC = [[OCCalendarViewController alloc] initAtPoint:insertPoint inView:self.view];
     calVC.delegate = self;
+    [self.view addSubview:calVC.view];
     
     return YES;
 }
