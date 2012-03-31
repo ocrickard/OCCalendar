@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "OCCalendarViewController.h"
 
-@interface OCViewController : UIViewController
+@interface OCViewController : UIViewController <UIGestureRecognizerDelegate, OCCalendarDelegate> {
+    OCCalendarViewController *calVC;
+    
+    UILabel *toolTipLabel;
+}
 
 @end

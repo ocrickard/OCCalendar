@@ -15,6 +15,11 @@
 		B1558BED152648CB00326469 /* OCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B1558BEC152648CB00326469 /* OCAppDelegate.m */; };
 		B1558BF0152648CB00326469 /* OCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1558BEF152648CB00326469 /* OCViewController.m */; };
 		B1558BF3152648CB00326469 /* OCViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1558BF1152648CB00326469 /* OCViewController.xib */; };
+		B1558BFD15264B3F00326469 /* OCCalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1558BFC15264B3F00326469 /* OCCalendarView.m */; };
+		B159EB951526EBE400EE95AD /* OCCalendarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B159EB941526EBE400EE95AD /* OCCalendarViewController.m */; };
+		B1D62990152687A6005F7283 /* OCSelectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1D6298F152687A6005F7283 /* OCSelectionView.m */; };
+		B1D6299415268D77005F7283 /* OCDaysView.m in Sources */ = {isa = PBXBuildFile; fileRef = B1D6299315268D77005F7283 /* OCDaysView.m */; };
+		B1D629961526926D005F7283 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1D629951526926D005F7283 /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,15 +27,24 @@
 		B1558BDC152648CB00326469 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		B1558BDE152648CB00326469 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		B1558BE0152648CB00326469 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		B1558BE4152648CB00326469 /* OCCalendar-Info.plist */ = {isa = PBXFileReference; path = "OCCalendar-Info.plist"; sourceTree = "<group>"; };
+		B1558BE4152648CB00326469 /* OCCalendar-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OCCalendar-Info.plist"; sourceTree = "<group>"; };
 		B1558BE6152648CB00326469 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B1558BE8152648CB00326469 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		B1558BEA152648CB00326469 /* OCCalendar-Prefix.pch */ = {isa = PBXFileReference; path = "OCCalendar-Prefix.pch"; sourceTree = "<group>"; };
-		B1558BEB152648CB00326469 /* OCAppDelegate.h */ = {isa = PBXFileReference; path = OCAppDelegate.h; sourceTree = "<group>"; };
+		B1558BEA152648CB00326469 /* OCCalendar-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OCCalendar-Prefix.pch"; sourceTree = "<group>"; };
+		B1558BEB152648CB00326469 /* OCAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OCAppDelegate.h; sourceTree = "<group>"; };
 		B1558BEC152648CB00326469 /* OCAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OCAppDelegate.m; sourceTree = "<group>"; };
-		B1558BEE152648CB00326469 /* OCViewController.h */ = {isa = PBXFileReference; path = OCViewController.h; sourceTree = "<group>"; };
+		B1558BEE152648CB00326469 /* OCViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OCViewController.h; sourceTree = "<group>"; };
 		B1558BEF152648CB00326469 /* OCViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OCViewController.m; sourceTree = "<group>"; };
 		B1558BF2152648CB00326469 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/OCViewController.xib; sourceTree = "<group>"; };
+		B1558BFB15264B3F00326469 /* OCCalendarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCCalendarView.h; sourceTree = "<group>"; };
+		B1558BFC15264B3F00326469 /* OCCalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCCalendarView.m; sourceTree = "<group>"; };
+		B159EB931526EBE400EE95AD /* OCCalendarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCCalendarViewController.h; sourceTree = "<group>"; };
+		B159EB941526EBE400EE95AD /* OCCalendarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCCalendarViewController.m; sourceTree = "<group>"; };
+		B1D6298E152687A6005F7283 /* OCSelectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCSelectionView.h; sourceTree = "<group>"; };
+		B1D6298F152687A6005F7283 /* OCSelectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCSelectionView.m; sourceTree = "<group>"; };
+		B1D6299215268D77005F7283 /* OCDaysView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCDaysView.h; sourceTree = "<group>"; };
+		B1D6299315268D77005F7283 /* OCDaysView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCDaysView.m; sourceTree = "<group>"; };
+		B1D629951526926D005F7283 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,6 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B1D629961526926D005F7283 /* QuartzCore.framework in Frameworks */,
 				B1558BDD152648CB00326469 /* UIKit.framework in Frameworks */,
 				B1558BDF152648CB00326469 /* Foundation.framework in Frameworks */,
 				B1558BE1152648CB00326469 /* CoreGraphics.framework in Frameworks */,
@@ -67,6 +82,7 @@
 		B1558BDB152648CB00326469 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B1D629951526926D005F7283 /* QuartzCore.framework */,
 				B1558BDC152648CB00326469 /* UIKit.framework */,
 				B1558BDE152648CB00326469 /* Foundation.framework */,
 				B1558BE0152648CB00326469 /* CoreGraphics.framework */,
@@ -82,6 +98,7 @@
 				B1558BEE152648CB00326469 /* OCViewController.h */,
 				B1558BEF152648CB00326469 /* OCViewController.m */,
 				B1558BF1152648CB00326469 /* OCViewController.xib */,
+				B159EB961526F1A500EE95AD /* OCCalendarView */,
 				B1558BE3152648CB00326469 /* Supporting Files */,
 			);
 			path = OCCalendar;
@@ -96,6 +113,21 @@
 				B1558BEA152648CB00326469 /* OCCalendar-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B159EB961526F1A500EE95AD /* OCCalendarView */ = {
+			isa = PBXGroup;
+			children = (
+				B159EB931526EBE400EE95AD /* OCCalendarViewController.h */,
+				B159EB941526EBE400EE95AD /* OCCalendarViewController.m */,
+				B1558BFB15264B3F00326469 /* OCCalendarView.h */,
+				B1558BFC15264B3F00326469 /* OCCalendarView.m */,
+				B1D6298E152687A6005F7283 /* OCSelectionView.h */,
+				B1D6298F152687A6005F7283 /* OCSelectionView.m */,
+				B1D6299215268D77005F7283 /* OCDaysView.h */,
+				B1D6299315268D77005F7283 /* OCDaysView.m */,
+			);
+			name = OCCalendarView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -165,6 +197,10 @@
 				B1558BE9152648CB00326469 /* main.m in Sources */,
 				B1558BED152648CB00326469 /* OCAppDelegate.m in Sources */,
 				B1558BF0152648CB00326469 /* OCViewController.m in Sources */,
+				B1558BFD15264B3F00326469 /* OCCalendarView.m in Sources */,
+				B1D62990152687A6005F7283 /* OCSelectionView.m in Sources */,
+				B1D6299415268D77005F7283 /* OCDaysView.m in Sources */,
+				B159EB951526EBE400EE95AD /* OCCalendarViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -242,6 +278,7 @@
 				GCC_PREFIX_HEADER = "OCCalendar/OCCalendar-Prefix.pch";
 				INFOPLIST_FILE = "OCCalendar/OCCalendar-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -253,6 +290,7 @@
 				GCC_PREFIX_HEADER = "OCCalendar/OCCalendar-Prefix.pch";
 				INFOPLIST_FILE = "OCCalendar/OCCalendar-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -276,6 +314,7 @@
 				B1558BF8152648CB00326469 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
