@@ -4,7 +4,7 @@
 
 OCCalendar is a very simple component for iPhone/iPad that provides a "Popover" date picker controller.  It is very easy to add to your project, and is 100% CoreGraphics code, so it uses no images, and is resolution independent.
 
-![Screenshot](demo.png)
+![Screenshot](https://github.com/ocrickard/OCCalendar/raw/master/demo.png)
 
 ##Usage##
 
