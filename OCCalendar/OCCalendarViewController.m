@@ -46,7 +46,6 @@
     
     [self.view addSubview:[bgView autorelease]];
     
-    //insertPoint = CGPointMake(200+130*0.5, 200+10);
     int width = 390;
     int height = 300;
     
