@@ -41,7 +41,7 @@ Now, you should be able to show the calendar by alloc'ing and init'ing it, then 
     calVC = [[OCCalendarViewController alloc] initAtPoint:CGPointMake(150, 50) inView:self.view];
     calVC.delegate = self;
     [self.view addSubview:calVC.view]; 
-    ```
+```
 
 ##Customization##
 You can customize the look and feel of the controller by tweaking the CoreGraphics rendering code.  I realize that this is not very pretty at the moment, but I'll eventually refactor it to make sure it's all neat and tidy.  You can change the placement of the little arrow to either the right or left side of the popover by changing the "arrowPosition" int.
