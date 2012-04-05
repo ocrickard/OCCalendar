@@ -14,53 +14,55 @@
 @implementation OCCalendarView
 
 - (id)initAtPoint:(CGPoint)p withFrame:(CGRect)frame {
-//    CGRect frame = CGRectMake(p.x - 390*0.5, p.y - 31.4, 390, 270);
-    self = [super initWithFrame:frame];
-    if(self) {
-        self.backgroundColor = [UIColor clearColor];
-        
-        calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+  return [self initAtPoint:p withFrame:frame arrowPosition:0];
+}
+
+- (id)initAtPoint:(CGPoint)p withFrame:(CGRect)frame arrowPosition:(int)arrowPosition {
+  //    CGRect frame = CGRectMake(p.x - 390*0.5, p.y - 31.4, 390, 270);
+  self = [super initWithFrame:frame];
+  if(self) {
+    self.backgroundColor = [UIColor clearColor];
+    
+    calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 		
 		NSUInteger unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
 		NSDateComponents *dateParts = [calendar components:unitFlags fromDate:[NSDate date]];
 		currentMonth = [dateParts month];
 		currentYear = [dateParts year];
-        
-        arrowPosition = 0;
-        
-        selected = NO;
-        startCellX = -1;
-        startCellY = -1;
-        endCellX = -1;
-        endCellY = -1;
-        
-        hDiff = 43;
-        vDiff = 30;
-        
-        selectionView = [[OCSelectionView alloc] initWithFrame:CGRectMake(66, 95, hDiff*7, vDiff*6)];
-        [self addSubview:selectionView];
-        
-        daysView = [[OCDaysView alloc] initWithFrame:CGRectMake(65, 98, hDiff*7, vDiff*6)];
-        [daysView setYear:currentYear];
-        [daysView setMonth:currentMonth];
-        [daysView resetRows];
-        [self addSubview:daysView];
-        
-        selectionView.frame = CGRectMake(66, 95, hDiff * 7, ([daysView addExtraRow] ? 6 : 5)*vDiff);
-        
-        //Make the view really small and invisible
-        CGAffineTransform tranny = CGAffineTransformMakeScale(0.1, 0.1);
-        self.transform = tranny;
-        self.alpha = 0.0f;
-        
-        //Animate in the view.
-        [UIView beginAnimations:@"animateInCalendar" context:nil];
-        [UIView setAnimationDuration:0.4f];
-        self.transform = CGAffineTransformMakeScale(1.0, 1.0);
-        self.alpha = 1.0f;
-        [UIView commitAnimations];
-    }
-    return self;
+    
+    selected = NO;
+    startCellX = -1;
+    startCellY = -1;
+    endCellX = -1;
+    endCellY = -1;
+    
+    hDiff = 43;
+    vDiff = 30;
+    
+    selectionView = [[OCSelectionView alloc] initWithFrame:CGRectMake(66, 95, hDiff*7, vDiff*6)];
+    [self addSubview:selectionView];
+    
+    daysView = [[OCDaysView alloc] initWithFrame:CGRectMake(65, 98, hDiff*7, vDiff*6)];
+    [daysView setYear:currentYear];
+    [daysView setMonth:currentMonth];
+    [daysView resetRows];
+    [self addSubview:daysView];
+    
+    selectionView.frame = CGRectMake(66, 95, hDiff * 7, ([daysView addExtraRow] ? 6 : 5)*vDiff);
+    
+    //Make the view really small and invisible
+    CGAffineTransform tranny = CGAffineTransformMakeScale(0.1, 0.1);
+    self.transform = tranny;
+    self.alpha = 0.0f;
+    
+    //Animate in the view.
+    [UIView beginAnimations:@"animateInCalendar" context:nil];
+    [UIView setAnimationDuration:0.4f];
+    self.transform = CGAffineTransformMakeScale(1.0, 1.0);
+    self.alpha = 1.0f;
+    [UIView commitAnimations];
+  }
+  return self;
 }
 
 - (void)setFrame:(CGRect)frame {

@@ -34,6 +34,7 @@
 }
 
 - (id)initAtPoint:(CGPoint)p withFrame:(CGRect)frame;
+- (id)initAtPoint:(CGPoint)p withFrame:(CGRect)frame arrowPosition:(int)arrowPosition;
 
 //-1 means it's in the upper-left, 0 means it's in the middle, and 1 means it's in the upper-right.
 - (void)setArrowPosition:(int)pos;
