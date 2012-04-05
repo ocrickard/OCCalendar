@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum {
+  OCArrowPositionLeft = -1,
+  OCArrowPositionCentered = 0,
+  OCArrowPositionRight = 1
+} OCArrowPosition;
+
 @class OCSelectionView;
 @class OCDaysView;
 
@@ -16,7 +22,6 @@
     
     int currentMonth;
     int currentYear;
-    
     
     BOOL selected;
     int startCellX;
@@ -34,10 +39,10 @@
 }
 
 - (id)initAtPoint:(CGPoint)p withFrame:(CGRect)frame;
-- (id)initAtPoint:(CGPoint)p withFrame:(CGRect)frame arrowPosition:(int)arrowPosition;
+- (id)initAtPoint:(CGPoint)p withFrame:(CGRect)frame arrowPosition:(OCArrowPosition)arrowPos;
 
-//-1 means it's in the upper-left, 0 means it's in the middle, and 1 means it's in the upper-right.
-- (void)setArrowPosition:(int)pos;
+//Valid Positions: OCArrowPositionLeft, OCArrowPositionCentered, OCArrowPositionRight
+- (void)setArrowPosition:(OCArrowPosition)pos;
 
 - (NSDate *)getStartDate;
 - (NSDate *)getEndDate;

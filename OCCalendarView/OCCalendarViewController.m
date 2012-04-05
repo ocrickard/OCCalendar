@@ -7,7 +7,6 @@
 //
 
 #import "OCCalendarViewController.h"
-#import "OCCalendarView.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface OCCalendarViewController ()
@@ -17,13 +16,18 @@
 @implementation OCCalendarViewController
 @synthesize delegate;
 
+- (id)initAtPoint:(CGPoint)point inView:(UIView *)v arrowPosition:(OCArrowPosition)ap {
+  self = [super initWithNibName:nil bundle:nil];
+  if(self) {
+    insertPoint = point;
+    parentView = v;
+    arrowPos = ap;
+  }
+  return self;
+}
+
 - (id)initAtPoint:(CGPoint)point inView:(UIView *)v {
-    self = [super initWithNibName:nil bundle:nil];
-    if(self) {
-        insertPoint = point;
-        parentView = v;
-    }
-    return self;
+  return [self initAtPoint:point inView:v arrowPosition:OCArrowPositionCentered];
 }
 
 - (void)loadView {
@@ -33,7 +37,6 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
     
     //this view sits behind the calendar and receives touches.  It tells the calendar view to disappear when tapped.
     UIView *bgView = [[UIView alloc] initWithFrame:self.view.frame];
@@ -48,7 +51,7 @@
     int width = 390;
     int height = 300;
     
-    calView = [[OCCalendarView alloc] initAtPoint:insertPoint withFrame:CGRectMake(insertPoint.x - width*0.5, insertPoint.y - 31.4, width, height)];
+    calView = [[OCCalendarView alloc] initAtPoint:insertPoint withFrame:CGRectMake(insertPoint.x - width*0.5, insertPoint.y - 31.4, width, height) arrowPosition:arrowPos];
     [self.view addSubview:[calView autorelease]];
 }
 

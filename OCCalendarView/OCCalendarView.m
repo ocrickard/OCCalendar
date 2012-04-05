@@ -14,10 +14,12 @@
 @implementation OCCalendarView
 
 - (id)initAtPoint:(CGPoint)p withFrame:(CGRect)frame {
-  return [self initAtPoint:p withFrame:frame arrowPosition:0];
+  return [self initAtPoint:p withFrame:frame arrowPosition:OCArrowPositionCentered];
 }
 
-- (id)initAtPoint:(CGPoint)p withFrame:(CGRect)frame arrowPosition:(int)arrowPosition {
+- (id)initAtPoint:(CGPoint)p withFrame:(CGRect)frame arrowPosition:(OCArrowPosition)arrowPos {
+  NSLog(@"Arrow Position: %u", arrowPos);
+  
   //    CGRect frame = CGRectMake(p.x - 390*0.5, p.y - 31.4, 390, 270);
   self = [super initWithFrame:frame];
   if(self) {
@@ -29,6 +31,8 @@
 		NSDateComponents *dateParts = [calendar components:unitFlags fromDate:[NSDate date]];
 		currentMonth = [dateParts month];
 		currentYear = [dateParts year];
+    
+    arrowPosition = arrowPos;
     
     selected = NO;
     startCellX = -1;
@@ -122,7 +126,7 @@
     [UIView commitAnimations];
 }
 
-- (void)setArrowPosition:(int)pos {
+- (void)setArrowPosition:(OCArrowPosition)pos {
     arrowPosition = pos;
 }
 
@@ -262,9 +266,9 @@
     
     float arrowPosX = 208;
     
-    if(arrowPosition == -1) {
+    if(arrowPosition == OCArrowPositionLeft) {
         arrowPosX = 67;
-    } else if(arrowPosition == 1) {
+    } else if(arrowPosition == OCArrowPositionRight) {
         arrowPosX = 346;
     }
     
