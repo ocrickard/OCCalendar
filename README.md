@@ -6,6 +6,10 @@ OCCalendar is a very simple component for iPhone/iPad that provides a "Popover" 
 
 ![Screenshot](https://github.com/ocrickard/OCCalendar/raw/master/demo.png)
 
+##License##
+
+OCCalendar is granted under the BSD license, for use with or without attribution.  Have fun!
+
 ##Usage##
 
 Drag the following files into your project:
