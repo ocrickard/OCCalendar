@@ -53,18 +53,22 @@
 	[dateParts release];
 	NSDateComponents *weekdayComponents = [calendar components:NSWeekdayCalendarUnit fromDate:dateOnFirst];
 	int weekdayOfFirst = [weekdayComponents weekday];	
+    
+    NSLog(@"weekdayOfFirst:%d", weekdayOfFirst);
 	
 	//Map first day of month to a week starting on Monday
 	//as the weekday component defaults to 1->Sun, 2->Mon...
-	if(weekdayOfFirst == 1) {
-		weekdayOfFirst = 7;
-	} else {
-		--weekdayOfFirst;
-	}
+//	if(weekdayOfFirst == 1) {
+//		weekdayOfFirst = 7;
+//	} else {
+//		--weekdayOfFirst;
+//	}
     
 	int numDaysInMonth = [calendar rangeOfUnit:NSDayCalendarUnit 
 										inUnit:NSMonthCalendarUnit 
                                        forDate:dateOnFirst].length;
+    
+    NSLog(@"month:%d, numDaysInMonth:%d", currentMonth, numDaysInMonth);
     
     CGContextRef context = UIGraphicsGetCurrentContext();
     
@@ -75,7 +79,7 @@
 		for(int j = 0; j < 7; j++) {
 			int dayNumber = i * 7 + j;
 			
-			if(dayNumber >= (weekdayOfFirst - 3) && day <= numDaysInMonth) {
+			if(dayNumber >= (weekdayOfFirst-1) && day <= numDaysInMonth) {
                 NSString *str = [NSString stringWithFormat:@"%d", day];
                 
                 CGContextSaveGState(context);
@@ -97,10 +101,12 @@
 
 - (void)setMonth:(int)month {
     currentMonth = month;
+    [self setNeedsDisplay];
 }
 
 - (void)setYear:(int)year {
     currentYear = year;
+    [self setNeedsDisplay];
 }
 
 - (void)resetRows {

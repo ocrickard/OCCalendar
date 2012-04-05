@@ -114,11 +114,13 @@
     UITouch *touch = [touches anyObject];
     
     CGPoint point = [touch locationInView:self];
-
-    endCellX = MIN((int)(point.x)/hDiff,6);
-    endCellY = (int)(point.y)/vDiff;
     
-    [self setNeedsDisplay];
+    if(CGRectContainsPoint(self.bounds, point)) {
+        endCellX = MIN((int)(point.x)/hDiff,6);
+        endCellY = (int)(point.y)/vDiff;
+        
+        [self setNeedsDisplay];
+    }
 }
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -126,10 +128,12 @@
     
     CGPoint point = [touch locationInView:self];
     
-    endCellX = MIN((int)(point.x)/hDiff,6);
-    endCellY = (int)(point.y)/vDiff;
-    
-    [self setNeedsDisplay];
+    if(CGRectContainsPoint(self.bounds, point)) {
+        endCellX = MIN((int)(point.x)/hDiff,6);
+        endCellY = (int)(point.y)/vDiff;
+        
+        [self setNeedsDisplay];
+    }
 }
 
 -(void)resetSelection {

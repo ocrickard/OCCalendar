@@ -41,8 +41,8 @@
         [self addSubview:selectionView];
         
         daysView = [[OCDaysView alloc] initWithFrame:CGRectMake(65, 98, hDiff*7, vDiff*6)];
-        [daysView setYear:2012];
-        [daysView setMonth:1];
+        [daysView setYear:currentYear];
+        [daysView setMonth:currentMonth];
         [daysView resetRows];
         [self addSubview:daysView];
         
@@ -125,7 +125,7 @@
 - (NSDate *)getStartDate {
     CGPoint startPoint = [selectionView startPoint];
     
-    int day = 0;
+    int day = 1;
     int month = currentMonth;
     int year = currentYear;
 	
@@ -139,28 +139,28 @@
 	NSDateComponents *weekdayComponents = [calendar components:NSWeekdayCalendarUnit fromDate:dateOnFirst];
 	int weekdayOfFirst = [weekdayComponents weekday];	
 	
-	//Map first day of month to a week starting on Monday
-	//as the weekday component defaults to 1->Sun, 2->Mon...
-	if(weekdayOfFirst == 1) {
-		weekdayOfFirst = 7;
-	} else {
-		--weekdayOfFirst;
-	}
+//	//Map first day of month to a week starting on Monday
+//	//as the weekday component defaults to 1->Sun, 2->Mon...
+//	if(weekdayOfFirst == 1) {
+//		weekdayOfFirst = 7;
+//	} else {
+//		--weekdayOfFirst;
+//	}
     
 	int numDaysInMonth = [calendar rangeOfUnit:NSDayCalendarUnit 
 										inUnit:NSMonthCalendarUnit 
                                        forDate:dateOnFirst].length;
     
-    if(startPoint.y == 0 && startPoint.x < weekdayOfFirst) {
-        day = startPoint.x - weekdayOfFirst+1;
+    if(startPoint.y == 0 && startPoint.x+1 < weekdayOfFirst) {
+        day = startPoint.x - weekdayOfFirst+2;
     } else {
         int countDays = 1;
         for (int i = 0; i < 6; i++) {
             for(int j = 0; j < 7; j++) {
                 int dayNumber = i * 7 + j;
-                if(dayNumber >= (weekdayOfFirst - 3) && day <= numDaysInMonth) {
+                if(dayNumber >= (weekdayOfFirst - 1) && day <= numDaysInMonth) {
                     if(i == startPoint.y && j == startPoint.x) {
-                        day = countDays-3;
+                        day = countDays;
                     }
                     ++countDays;
                 }
@@ -180,7 +180,7 @@
 - (NSDate *)getEndDate {
     CGPoint endPoint = [selectionView endPoint];
     
-    int day = 0;
+    int day = 1;
     int month = currentMonth;
     int year = currentYear;
 	
@@ -196,25 +196,25 @@
 	
 	//Map first day of month to a week starting on Monday
 	//as the weekday component defaults to 1->Sun, 2->Mon...
-	if(weekdayOfFirst == 1) {
-		weekdayOfFirst = 7;
-	} else {
-		--weekdayOfFirst;
-	}
+//	if(weekdayOfFirst == 1) {
+//		weekdayOfFirst = 7;
+//	} else {
+//		--weekdayOfFirst;
+//	}
     
 	int numDaysInMonth = [calendar rangeOfUnit:NSDayCalendarUnit 
 										inUnit:NSMonthCalendarUnit 
                                        forDate:dateOnFirst].length;
-	if(endPoint.y == 0 && endPoint.x < weekdayOfFirst) {
-        day = endPoint.x - weekdayOfFirst+1;
+	if(endPoint.y == 0 && endPoint.x+1 < weekdayOfFirst) {
+        day = endPoint.x - weekdayOfFirst+2;
     } else {
         int countDays = 1;
         for (int i = 0; i < 6; i++) {
             for(int j = 0; j < 7; j++) {
                 int dayNumber = i * 7 + j;
-                if(dayNumber >= (weekdayOfFirst - 3) && day <= numDaysInMonth) {
+                if(dayNumber >= (weekdayOfFirst - 1) && day <= numDaysInMonth) {
                     if(i == endPoint.y && j == endPoint.x) {
-                        day = countDays-3;
+                        day = countDays;
                     }
                     ++countDays;
                 }

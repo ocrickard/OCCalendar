@@ -78,11 +78,11 @@
         //Recreate the calendar if it doesn't exist.
         
         //CGPoint insertPoint = CGPointMake(200+130*0.5, 200+10);
-        CGPoint insertPoint = [touch locationInView:self.view];
+        CGPoint point = [touch locationInView:self.view];
         int width = 390;
         int height = 300;
         
-        calView = [[OCCalendarView alloc] initAtPoint:insertPoint withFrame:CGRectMake(insertPoint.x - width*0.5, insertPoint.y - 31.4, width, height)];
+        calView = [[OCCalendarView alloc] initAtPoint:point withFrame:CGRectMake(point.x - width*0.5, point.y - 31.4, width, height)];
         [self.view addSubview:[calView autorelease]];
     }
     
