@@ -70,7 +70,7 @@
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     UITouch *touch = [touches anyObject];
     CGPoint point = [touch locationInView:self];
-    if(CGRectContainsPoint(CGRectMake(55, 40, 30, 25), point)) {
+    if(CGRectContainsPoint(CGRectMake(55, 40, 30, 35), point)) {
         //User tapped the prevMonth button
         if(currentMonth == 1) {
             currentMonth = 12;
@@ -85,7 +85,7 @@
         [UIView commitAnimations];
         
         [self performSelector:@selector(resetViews) withObject:nil afterDelay:0.1f];
-    } else if(CGRectContainsPoint(CGRectMake(335, 40, 30, 25), point)) {
+    } else if(CGRectContainsPoint(CGRectMake(335, 40, 30, 35), point)) {
         //User tapped the nextMonth button
         if(currentMonth == 12) {
             currentMonth = 1;
@@ -110,6 +110,8 @@
     [daysView resetRows];
     [daysView setNeedsDisplay];
     [self setNeedsDisplay];
+    
+    selectionView.frame = CGRectMake(66, 95, hDiff * 7, ([daysView addExtraRow] ? 6 : 5)*vDiff);
     
     [UIView beginAnimations:@"fadeInViews" context:nil];
     [UIView setAnimationDuration:0.1f];
@@ -138,14 +140,6 @@
 	[dateParts release];
 	NSDateComponents *weekdayComponents = [calendar components:NSWeekdayCalendarUnit fromDate:dateOnFirst];
 	int weekdayOfFirst = [weekdayComponents weekday];	
-	
-//	//Map first day of month to a week starting on Monday
-//	//as the weekday component defaults to 1->Sun, 2->Mon...
-//	if(weekdayOfFirst == 1) {
-//		weekdayOfFirst = 7;
-//	} else {
-//		--weekdayOfFirst;
-//	}
     
 	int numDaysInMonth = [calendar rangeOfUnit:NSDayCalendarUnit 
 										inUnit:NSMonthCalendarUnit 
@@ -193,14 +187,6 @@
 	[dateParts release];
 	NSDateComponents *weekdayComponents = [calendar components:NSWeekdayCalendarUnit fromDate:dateOnFirst];
 	int weekdayOfFirst = [weekdayComponents weekday];	
-	
-	//Map first day of month to a week starting on Monday
-	//as the weekday component defaults to 1->Sun, 2->Mon...
-//	if(weekdayOfFirst == 1) {
-//		weekdayOfFirst = 7;
-//	} else {
-//		--weekdayOfFirst;
-//	}
     
 	int numDaysInMonth = [calendar rangeOfUnit:NSDayCalendarUnit 
 										inUnit:NSMonthCalendarUnit 
@@ -281,6 +267,7 @@
     }
     
     if([daysView addExtraRow]) {
+        NSLog(@"Added extra row");
         [roundedRectanglePath moveToPoint: CGPointMake(42, 267.42)];
         [roundedRectanglePath addCurveToPoint: CGPointMake(52, 278.4) controlPoint1: CGPointMake(42, 273.49) controlPoint2: CGPointMake(46.48, 278.4)];
         [roundedRectanglePath addLineToPoint: CGPointMake(361.5, 278.4)];
@@ -306,6 +293,7 @@
         [roundedRectanglePath addLineToPoint: CGPointMake(52, 43.9)];
         [roundedRectanglePath addCurveToPoint: CGPointMake(42, 53.9) controlPoint1: CGPointMake(46.48, 43.9) controlPoint2: CGPointMake(42, 48.38)];
         [roundedRectanglePath addLineToPoint: CGPointMake(42, 246.4)];
+        NSLog(@"did not add extra row");
     }
     
     [roundedRectanglePath closePath];

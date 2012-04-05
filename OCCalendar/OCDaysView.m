@@ -55,15 +55,7 @@
 	int weekdayOfFirst = [weekdayComponents weekday];	
     
     NSLog(@"weekdayOfFirst:%d", weekdayOfFirst);
-	
-	//Map first day of month to a week starting on Monday
-	//as the weekday component defaults to 1->Sun, 2->Mon...
-//	if(weekdayOfFirst == 1) {
-//		weekdayOfFirst = 7;
-//	} else {
-//		--weekdayOfFirst;
-//	}
-    
+
 	int numDaysInMonth = [calendar rangeOfUnit:NSDayCalendarUnit 
 										inUnit:NSMonthCalendarUnit 
                                        forDate:dateOnFirst].length;
@@ -91,6 +83,7 @@
                 
                 if(i == 5) {
                     didAddExtraRow = YES;
+                    NSLog(@"didAddExtraRow");
                 }
                 
 				++day;
@@ -124,14 +117,6 @@
 	[dateParts release];
 	NSDateComponents *weekdayComponents = [calendar components:NSWeekdayCalendarUnit fromDate:dateOnFirst];
 	int weekdayOfFirst = [weekdayComponents weekday];	
-	
-	//Map first day of month to a week starting on Monday
-	//as the weekday component defaults to 1->Sun, 2->Mon...
-	if(weekdayOfFirst == 1) {
-		weekdayOfFirst = 7;
-	} else {
-		--weekdayOfFirst;
-	}
     
 	int numDaysInMonth = [calendar rangeOfUnit:NSDayCalendarUnit 
 										inUnit:NSMonthCalendarUnit 
@@ -142,9 +127,10 @@
 	for (int i = 0; i < 6; i++) {
 		for(int j = 0; j < 7; j++) {
 			int dayNumber = i * 7 + j;
-			if(dayNumber >= (weekdayOfFirst - 3) && day <= numDaysInMonth) {
+			if(dayNumber >= (weekdayOfFirst - 1) && day <= numDaysInMonth) {
                 if(i == 5) {
                     didAddExtraRow = YES;
+                    NSLog(@"didAddExtraRow");
                 }
 				++day;
 			}
