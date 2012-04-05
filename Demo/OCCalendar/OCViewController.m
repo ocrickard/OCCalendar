@@ -51,7 +51,7 @@
     
     
     //Here's where the magic happens
-    calVC = [[OCCalendarViewController alloc] initAtPoint:CGPointMake(150, 50) inView:self.view];
+    calVC = [[OCCalendarViewController alloc] initAtPoint:CGPointMake(150, 50) inView:self.view arrowPosition:OCArrowPositionCentered];
     calVC.delegate = self;
     [self.view addSubview:calVC.view];
 }
