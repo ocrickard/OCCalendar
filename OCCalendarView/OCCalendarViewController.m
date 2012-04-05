@@ -51,7 +51,15 @@
     int width = 390;
     int height = 300;
     
-    calView = [[OCCalendarView alloc] initAtPoint:insertPoint withFrame:CGRectMake(insertPoint.x - width*0.5, insertPoint.y - 31.4, width, height) arrowPosition:arrowPos];
+    float arrowPosX = 208;
+    
+    if(arrowPos == OCArrowPositionLeft) {
+        arrowPosX = 67;
+    } else if(arrowPos == OCArrowPositionRight) {
+        arrowPosX = 346;
+    }
+    
+    calView = [[OCCalendarView alloc] initAtPoint:insertPoint withFrame:CGRectMake(insertPoint.x - arrowPosX, insertPoint.y - 31.4, width, height) arrowPosition:arrowPos];
     [self.view addSubview:[calView autorelease]];
 }
 

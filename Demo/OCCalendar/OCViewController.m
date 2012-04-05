@@ -51,7 +51,7 @@
     
     
     //Here's where the magic happens
-    calVC = [[OCCalendarViewController alloc] initAtPoint:CGPointMake(150, 50) inView:self.view arrowPosition:OCArrowPositionCentered];
+    calVC = [[OCCalendarViewController alloc] initAtPoint:CGPointMake(150, 50) inView:self.view arrowPosition:OCArrowPositionLeft];
     calVC.delegate = self;
     [self.view addSubview:calVC.view];
 }
@@ -124,7 +124,7 @@
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     CGPoint insertPoint = [touch locationInView:self.view];
     
-    calVC = [[OCCalendarViewController alloc] initAtPoint:insertPoint inView:self.view];
+    calVC = [[OCCalendarViewController alloc] initAtPoint:insertPoint inView:self.view arrowPosition:OCArrowPositionRight];
     calVC.delegate = self;
     [self.view addSubview:calVC.view];
     
