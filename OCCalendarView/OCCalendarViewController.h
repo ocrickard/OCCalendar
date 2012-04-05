@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "OCCalendarView.h"
 
 @class OCCalendarView;
 
@@ -17,18 +18,20 @@
 @end
 
 @interface OCCalendarViewController : UIViewController <UIGestureRecognizerDelegate> {
-    id <OCCalendarDelegate> delegate;
-    
-    UILabel *toolTipLabel;
-    OCCalendarView *calView;
-    
-    CGPoint insertPoint;
-    
-    UIView *parentView;
+  id <OCCalendarDelegate> delegate;
+  
+  UILabel *toolTipLabel;
+  OCCalendarView *calView;
+  
+  CGPoint insertPoint;
+  OCArrowPosition arrowPos;
+  
+  UIView *parentView;
 }
 
 @property (nonatomic, assign) id <OCCalendarDelegate> delegate;
 
 - (id)initAtPoint:(CGPoint)point inView:(UIView *)v;
+- (id)initAtPoint:(CGPoint)point inView:(UIView *)v arrowPosition:(OCArrowPosition)ap;
 
 @end
