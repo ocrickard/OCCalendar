@@ -66,6 +66,8 @@
     
     [self showToolTip:[NSString stringWithFormat:@"%@ - %@", [df stringFromDate:startDate], [df stringFromDate:endDate]]];
     
+    [df release];
+    
     [calVC.view removeFromSuperview];
     
     calVC.delegate = nil;
