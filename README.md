@@ -48,10 +48,10 @@ Now, you should be able to show the calendar by alloc'ing and init'ing it, then 
 ```
 
 ##Customization##
-You can customize the look and feel of the controller by tweaking the CoreGraphics rendering code.  I realize that this is not very pretty at the moment, but I'll eventually refactor it to make sure it's all neat and tidy.  You can change the placement of the little arrow to either the right or left side of the popover by changing the "arrowPosition" int.
+You can customize the look and feel of the controller by tweaking the CoreGraphics rendering code.  I realize that this is not very pretty at the moment, but I'll eventually refactor it to make sure it's all neat and tidy.  You can change the placement of the little arrow to either the right or left side of the popover by changing the "arrowPosition" enum in the initializer.
 
 ```
-arrowPosition = -1 // This is for arrow-left
-arrowPosition = 0 // Arrow is centered
-arrowPosition = 1 // Arrow is on the right 
+[[OCCalendarViewController alloc] initAtPoint:insertPoint inView:self.view arrowPosition:OCArrowPositionRight] //Right position
+[[OCCalendarViewController alloc] initAtPoint:insertPoint inView:self.view arrowPosition:OCArrowPositionCenter] //Center position
+[[OCCalendarViewController alloc] initAtPoint:insertPoint inView:self.view arrowPosition:OCArrowPositionLeft] //Left position
 ```
