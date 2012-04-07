@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>OCCalendar by ocrickard</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>OCCalendar</h1>
+<p>Date range picking calendar controller for iOS</p>
+        <p class="view"><a href="https://github.com/ocrickard/OCCalendar">View the Project on GitHub <small>ocrickard/OCCalendar</small></a></p>
+        <ul>
+          <li><a href="https://github.com/ocrickard/OCCalendar/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/ocrickard/OCCalendar/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/ocrickard/OCCalendar">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>OCCalendarController</h1>
+
+<h2>Introduction</h2>
+
+<p>OCCalendar is a very simple component for iPhone/iPad that provides a "Popover" date picker controller.  It is very easy to add to your project, and is 100% CoreGraphics code, so it uses no images, and is resolution independent.  I realize that I need to cut down the size for iPhone a bit more.  I originally wrote it just for iPad, and my paths and sizing are all just slightly too wide for the iPhone.  I'll fix it when I get a chance.</p>
+
+<p><img src="https://github.com/ocrickard/OCCalendar/raw/master/demo.png" alt="Screenshot"></p>
+
+<h2>License</h2>
+
+<p>OCCalendar is granted under the BSD license, for use with or without attribution.  Have fun!</p>
+
+<h2>Usage</h2>
+
+<p>Drag the following files into your project:</p>
+
+<ul>
+<li>OCCalendarViewController.h</li>
+<li>OCCalendarViewController.m</li>
+<li>OCCalendarView.h</li>
+<li>OCCalendarView.m</li>
+<li>OCSelectionView.h</li>
+<li>OCSelectionView.m</li>
+<li>OCDaysView.h</li>
+<li>OCDaysView.m</li>
+</ul><p>Then implement the OCCalendarDelegate protocol in the class you wish to call from.  The only method in this protocol specifies a way for the calendar to report back the beginning and ending ranges of dates.  These are returnes as NSDate objects for convenience.  In the demo app, we do the following:</p>
+
+<pre><code> - (void)completedWithStartDate:(NSDate *)startDate endDate:(NSDate *)endDate {
+    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    [df setDateStyle:NSDateFormatterShortStyle];
+
+    [self showToolTip:[NSString stringWithFormat:@"%@ - %@", [df stringFromDate:startDate], [df stringFromDate:endDate]]];
+
+    calVC.delegate = nil;
+    [calVC release];
+    calVC = nil;
+} 
+</code></pre>
+
+<p>Now, you should be able to show the calendar by alloc'ing and init'ing it, then adding to your view.</p>
+
+<pre><code>//Here's where the magic happens
+    calVC = [[OCCalendarViewController alloc] initAtPoint:CGPointMake(150, 50) inView:self.view];
+    calVC.delegate = self;
+    [self.view addSubview:calVC.view]; 
+</code></pre>
+
+<h2>Customization</h2>
+
+<p>You can customize the look and feel of the controller by tweaking the CoreGraphics rendering code.  I realize that this is not very pretty at the moment, but I'll eventually refactor it to make sure it's all neat and tidy.  You can change the placement of the little arrow to either the right or left side of the popover by changing the "arrowPosition" enum in the initializer.</p>
+
+<pre><code>[[OCCalendarViewController alloc] initAtPoint:insertPoint inView:self.view arrowPosition:OCArrowPositionRight] //Right position
+[[OCCalendarViewController alloc] initAtPoint:insertPoint inView:self.view arrowPosition:OCArrowPositionCenter] //Center position
+[[OCCalendarViewController alloc] initAtPoint:insertPoint inView:self.view arrowPosition:OCArrowPositionLeft] //Left position
+</code></pre>
+      </section>
+    </div>
+    <footer>
+      <p>Project maintained by <a href="https://github.com/ocrickard">ocrickard</a></p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+  </body>
+</html>
