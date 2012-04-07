@@ -65,7 +65,40 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     
     didAddExtraRow = NO;
-	
+    
+    
+    
+    //Find number of days in previous month
+    NSDateComponents *prevDateParts = [[NSDateComponents alloc] init];
+	[prevDateParts setMonth:month-1];
+	[prevDateParts setYear:year];
+	[prevDateParts setDay:1];
+    
+    NSDate *prevDateOnFirst = [calendar dateFromComponents:prevDateParts];
+    
+    [prevDateParts release];
+    
+    int numDaysInPrevMonth = [calendar rangeOfUnit:NSDayCalendarUnit 
+										inUnit:NSMonthCalendarUnit 
+                                       forDate:prevDateOnFirst].length;
+    
+    //Draw the text for each of those days.
+    for(int i = 0; i <= weekdayOfFirst-2; i++) {
+        int day = numDaysInPrevMonth - weekdayOfFirst + 2 + i;
+        
+        NSString *str = [NSString stringWithFormat:@"%d", day];
+        
+        CGContextSaveGState(context);
+        CGContextSetShadowWithColor(context, shadow2Offset, shadow2BlurRadius, shadow2);
+        CGRect dayHeader2Frame = CGRectMake((i)*hDiff, 0, 21, 14);
+        [[UIColor colorWithWhite:0.6f alpha:1.0f] setFill];
+        [str drawInRect: dayHeader2Frame withFont: [UIFont fontWithName: @"Helvetica" size: 12] lineBreakMode: UILineBreakModeWordWrap alignment: UITextAlignmentCenter];
+        CGContextRestoreGState(context);
+    }
+    
+    
+    BOOL endedOnSat = NO;
+	int finalRow = 0;
 	int day = 1;
 	for (int i = 0; i < 6; i++) {
 		for(int j = 0; j < 7; j++) {
@@ -81,6 +114,12 @@
                 [str drawInRect: dayHeader2Frame withFont: [UIFont fontWithName: @"Helvetica" size: 12] lineBreakMode: UILineBreakModeWordWrap alignment: UITextAlignmentCenter];
                 CGContextRestoreGState(context);
                 
+                finalRow = i;
+                
+                if(day == numDaysInMonth && j == 6) {
+                    endedOnSat = YES;
+                }
+                
                 if(i == 5) {
                     didAddExtraRow = YES;
                     NSLog(@"didAddExtraRow");
@@ -90,6 +129,35 @@
 			}
 		}
 	}
+    
+    //Find number of days in previous month
+    NSDateComponents *nextDateParts = [[NSDateComponents alloc] init];
+	[nextDateParts setMonth:month+1];
+	[nextDateParts setYear:year];
+	[nextDateParts setDay:1];
+    
+    NSDate *nextDateOnFirst = [calendar dateFromComponents:nextDateParts];
+    
+    [nextDateParts release];
+    
+    NSDateComponents *nextWeekdayComponents = [calendar components:NSWeekdayCalendarUnit fromDate:nextDateOnFirst];
+	int weekdayOfNextFirst = [nextWeekdayComponents weekday];
+    
+    if(!endedOnSat) {
+        //Draw the text for each of those days.
+        for(int i = weekdayOfNextFirst - 1; i < 7; i++) {
+            int day = i - weekdayOfNextFirst + 2;
+            
+            NSString *str = [NSString stringWithFormat:@"%d", day];
+            
+            CGContextSaveGState(context);
+            CGContextSetShadowWithColor(context, shadow2Offset, shadow2BlurRadius, shadow2);
+            CGRect dayHeader2Frame = CGRectMake((i)*hDiff, finalRow * vDiff, 21, 14);
+            [[UIColor colorWithWhite:0.6f alpha:1.0f] setFill];
+            [str drawInRect: dayHeader2Frame withFont: [UIFont fontWithName: @"Helvetica" size: 12] lineBreakMode: UILineBreakModeWordWrap alignment: UITextAlignmentCenter];
+            CGContextRestoreGState(context);
+        }
+    }
 }
 
 - (void)setMonth:(int)month {
