@@ -64,13 +64,19 @@
             int thisRowStartCell;
             if(startCellY == i) {
                 thisRowStartCell = startCellX;
+                if (startCellY > endCellY) {
+                    thisRowStartCell = 0; thisRowEndCell = startCellX;
+                }
             } else {
                 thisRowStartCell = 0;
             }
             
             if(endCellY == i) {
                 thisRowEndCell = endCellX;
-            } else {
+                if (startCellY > endCellY) {
+                    thisRowStartCell = endCellX; thisRowEndCell = 6;
+                }
+            } else if (!(startCellY > endCellY)) {
                 thisRowEndCell = 6;
             }
             
