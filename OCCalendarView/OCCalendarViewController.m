@@ -70,7 +70,10 @@
     [calView removeFromSuperview];
     calView = nil;
     
-    [self.delegate completedWithStartDate:startDate endDate:endDate];
+    if([startDate compare:endDate] == NSOrderedAscending)
+        [self.delegate completedWithStartDate:startDate endDate:endDate];
+    else
+        [self.delegate completedWithStartDate:endDate endDate:startDate];
 }
 
 
