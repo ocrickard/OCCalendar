@@ -224,9 +224,12 @@
 }
 
 - (void)drawRect:(CGRect)rect
-{
-    NSArray *dayTitles = [NSArray arrayWithObjects:@"sun", @"mon", @"tu", @"wed", @"thu", @"fri", @"sat", nil];
-    
+{    
+    //// Get day titles from current Locale
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    NSArray *dayTitles = [dateFormatter shortStandaloneWeekdaySymbols];
+    NSArray *monthTitles = [dateFormatter standaloneMonthSymbols];
+            
     //// General Declarations
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -402,10 +405,8 @@
     
     int month = currentMonth;
     int year = currentYear;
-    char *months[12] = {"January", "February", "March", "April", "May", "June",
-		"July", "August", "September", "October", "November", "December"};
-	NSString *monthTitle = [NSString stringWithFormat:@"%s %d", months[month - 1], year];
-
+    
+	NSString *monthTitle = [NSString stringWithFormat:@"%@ %d", [monthTitles objectAtIndex:(month - 1)], year];
     
     //// Month Header Drawing
     CGContextSaveGState(context);
