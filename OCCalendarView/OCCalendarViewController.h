@@ -27,11 +27,17 @@
   OCArrowPosition arrowPos;
   
   UIView *parentView;
+    
+  NSDate *startDate;
+  NSDate *endDate;
 }
 
 @property (nonatomic, assign) id <OCCalendarDelegate> delegate;
+@property (nonatomic, retain) NSDate *startDate;
+@property (nonatomic, retain) NSDate *endDate;
 
 - (id)initAtPoint:(CGPoint)point inView:(UIView *)v;
 - (id)initAtPoint:(CGPoint)point inView:(UIView *)v arrowPosition:(OCArrowPosition)ap;
+
 
 @end

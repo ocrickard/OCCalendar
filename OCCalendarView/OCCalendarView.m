@@ -27,10 +27,10 @@
     
     calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 		
-		NSUInteger unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
-		NSDateComponents *dateParts = [calendar components:unitFlags fromDate:[NSDate date]];
-		currentMonth = [dateParts month];
-		currentYear = [dateParts year];
+    NSUInteger unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
+    NSDateComponents *dateParts = [calendar components:unitFlags fromDate:[NSDate date]];
+    currentMonth = [dateParts month];
+    currentYear = [dateParts year];
     
     arrowPosition = arrowPos;
     
@@ -221,6 +221,111 @@
     NSDate *retDate = [calendar dateFromComponents:comps];
     
     return retDate;
+}
+
+- (void)setStartDate:(NSDate *)sDate {
+    NSDateComponents *sComponents = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:sDate];
+    
+    if([sComponents month] != currentMonth) {
+        currentMonth = [sComponents month];
+    }
+    if([sComponents year] != currentYear) {
+        currentYear = [sComponents year];
+    }
+    int day = 1;
+    int month = currentMonth;
+    int year = currentYear;
+	
+	//Get the first day of the month
+	NSDateComponents *dateParts = [[NSDateComponents alloc] init];
+	[dateParts setMonth:month];
+	[dateParts setYear:year];
+	[dateParts setDay:1];
+	NSDate *dateOnFirst = [calendar dateFromComponents:dateParts];
+	[dateParts release];
+	NSDateComponents *weekdayComponents = [calendar components:NSWeekdayCalendarUnit fromDate:dateOnFirst];
+	int weekdayOfFirst = [weekdayComponents weekday];	
+    
+	int numDaysInMonth = [calendar rangeOfUnit:NSDayCalendarUnit 
+										inUnit:NSMonthCalendarUnit 
+                                       forDate:dateOnFirst].length;
+    
+    BOOL breakLoop = NO;
+    int countDays = 1;
+    for (int i = 0; i < 6; i++) {
+        if(breakLoop) {
+            break;
+        }
+        for(int j = 0; j < 7; j++) {
+            int dayNumber = i * 7 + j;
+            if(dayNumber >= (weekdayOfFirst - 1) && day <= numDaysInMonth) {
+                if(countDays == [sComponents day]) {
+                    CGPoint thePoint = CGPointMake(j, i);
+                    [selectionView setStartPoint:thePoint];
+                    breakLoop = YES;
+                    break;
+                }
+                ++countDays;
+            }
+        }
+    }
+    
+    [daysView setMonth:currentMonth];
+    [daysView setYear:currentYear];
+    [daysView resetRows];
+    [daysView setNeedsDisplay];
+}
+
+- (void)setEndDate:(NSDate *)eDate {
+    NSDateComponents *eComponents = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:eDate];
+    
+    if([eComponents month] != currentMonth) {
+        currentMonth = [eComponents month];
+    }
+    if([eComponents year] != currentYear) {
+        currentYear = [eComponents year];
+    }
+    int day = 1;
+    int month = currentMonth;
+    int year = currentYear;
+	
+	//Get the first day of the month
+	NSDateComponents *dateParts = [[NSDateComponents alloc] init];
+	[dateParts setMonth:month];
+	[dateParts setYear:year];
+	[dateParts setDay:1];
+	NSDate *dateOnFirst = [calendar dateFromComponents:dateParts];
+	[dateParts release];
+	NSDateComponents *weekdayComponents = [calendar components:NSWeekdayCalendarUnit fromDate:dateOnFirst];
+	int weekdayOfFirst = [weekdayComponents weekday];	
+    
+	int numDaysInMonth = [calendar rangeOfUnit:NSDayCalendarUnit 
+										inUnit:NSMonthCalendarUnit 
+                                       forDate:dateOnFirst].length;
+    
+    BOOL breakLoop = NO;
+    int countDays = 1;
+    for (int i = 0; i < 6; i++) {
+        if(breakLoop) {
+            break;
+        }
+        for(int j = 0; j < 7; j++) {
+            int dayNumber = i * 7 + j;
+            if(dayNumber >= (weekdayOfFirst - 1) && day <= numDaysInMonth) {
+                if(countDays == [eComponents day]) {
+                    CGPoint thePoint = CGPointMake(j, i);
+                    [selectionView setEndPoint:thePoint];
+                    breakLoop = YES;
+                    break;
+                }
+                ++countDays;
+            }
+        }
+    }
+    [daysView setMonth:currentMonth];
+    [daysView setYear:currentYear];
+    [daysView resetRows];
+    [daysView setNeedsDisplay];
 }
 
 - (void)drawRect:(CGRect)rect

@@ -47,4 +47,7 @@ typedef enum {
 - (NSDate *)getStartDate;
 - (NSDate *)getEndDate;
 
+- (void)setStartDate:(NSDate *)sDate;
+- (void)setEndDate:(NSDate *)eDate;
+
 @end

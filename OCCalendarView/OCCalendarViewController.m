@@ -14,7 +14,7 @@
 @end
 
 @implementation OCCalendarViewController
-@synthesize delegate;
+@synthesize delegate, startDate, endDate;
 
 - (id)initAtPoint:(CGPoint)point inView:(UIView *)v arrowPosition:(OCArrowPosition)ap {
   self = [super initWithNibName:nil bundle:nil];
@@ -57,6 +57,12 @@
     }
     
     calView = [[OCCalendarView alloc] initAtPoint:insertPoint withFrame:CGRectMake(insertPoint.x - arrowPosX, insertPoint.y - 31.4, width, height) arrowPosition:arrowPos];
+    if(self.startDate) {
+        [calView setStartDate:startDate];
+    }
+    if(self.endDate) {
+        [calView setEndDate:endDate];
+    }
     [self.view addSubview:[calView autorelease]];
 }
 
@@ -64,9 +70,27 @@
     [super viewDidAppear:animated];
 }
 
+- (void)setStartDate:(NSDate *)sDate {
+    if(startDate) {
+        [startDate release];
+        startDate = nil;
+    }
+    startDate = [sDate retain];
+    [calView setStartDate:startDate];
+}
+
+- (void)setEndDate:(NSDate *)eDate {
+    if(endDate) {
+        [endDate release];
+        endDate = nil;
+    }
+    endDate = [eDate retain];
+    [calView setEndDate:endDate];
+}
+
 - (void)removeCalView {
-    NSDate *startDate = [calView getStartDate];
-    NSDate *endDate = [calView getEndDate];
+    self.startDate = [calView getStartDate];
+    self.endDate = [calView getEndDate];
     
     [calView removeFromSuperview];
     calView = nil;
@@ -76,8 +100,6 @@
     else
         [self.delegate completedWithStartDate:endDate endDate:startDate];
 }
-
-
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     if(calView) {
@@ -107,6 +129,12 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return YES;
+}
+
+- (void)dealloc {
+    self.startDate = nil;
+    self.endDate = nil;
+    [super dealloc];
 }
 
 @end

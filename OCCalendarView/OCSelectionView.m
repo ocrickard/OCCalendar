@@ -159,4 +159,18 @@
     return CGPointMake(endCellX, endCellY);
 }
 
+-(void)setStartPoint:(CGPoint)sPoint {
+    startCellX = sPoint.x;
+    startCellY = sPoint.y;
+    selected = YES;
+    [self setNeedsDisplay];
+}
+
+-(void)setEndPoint:(CGPoint)ePoint {
+    endCellX = ePoint.x;
+    endCellY = ePoint.y;
+    selected = YES;
+    [self setNeedsDisplay];
+}
+
 @end

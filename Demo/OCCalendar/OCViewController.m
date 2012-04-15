@@ -49,10 +49,33 @@
     
     [self.view addSubview:[bgView autorelease]];
     
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     
     //Here's where the magic happens
     calVC = [[OCCalendarViewController alloc] initAtPoint:CGPointMake(150, 50) inView:self.view arrowPosition:OCArrowPositionLeft];
     calVC.delegate = self;
+    //Now we're going to optionally set the start and end date of a pre-selected range.
+    //This is totally optional.
+	NSDateComponents *dateParts = [[NSDateComponents alloc] init];
+	[dateParts setMonth:5];
+	[dateParts setYear:2012];
+	[dateParts setDay:8];
+    
+	NSDate *sDate = [calendar dateFromComponents:dateParts];
+	[dateParts release];
+    
+    dateParts = [[NSDateComponents alloc] init];
+	[dateParts setMonth:5];
+	[dateParts setYear:2012];
+	[dateParts setDay:14];
+    
+	NSDate *eDate = [calendar dateFromComponents:dateParts];
+	[dateParts release];
+    
+    [calVC setStartDate:sDate];
+    [calVC setEndDate:eDate];
+    
+    //Add to the view.
     [self.view addSubview:calVC.view];
 }
 

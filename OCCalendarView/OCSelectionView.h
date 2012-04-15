@@ -27,4 +27,7 @@
 -(CGPoint)startPoint;
 -(CGPoint)endPoint;
 
+-(void)setStartPoint:(CGPoint)sPoint;
+-(void)setEndPoint:(CGPoint)ePoint;
+
 @end

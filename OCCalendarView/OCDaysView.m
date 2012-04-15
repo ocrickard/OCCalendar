@@ -82,11 +82,15 @@
 										inUnit:NSMonthCalendarUnit 
                                        forDate:prevDateOnFirst].length;
     
+    NSDateComponents *today = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:[NSDate date]];
+    
     //Draw the text for each of those days.
     for(int i = 0; i <= weekdayOfFirst-2; i++) {
         int day = numDaysInPrevMonth - weekdayOfFirst + 2 + i;
         
         NSString *str = [NSString stringWithFormat:@"%d", day];
+        
+        
         
         CGContextSaveGState(context);
         CGContextSetShadowWithColor(context, shadow2Offset, shadow2BlurRadius, shadow2);
@@ -110,7 +114,11 @@
                 CGContextSaveGState(context);
                 CGContextSetShadowWithColor(context, shadow2Offset, shadow2BlurRadius, shadow2);
                 CGRect dayHeader2Frame = CGRectMake(j*hDiff, i*vDiff, 21, 14);
-                [[UIColor whiteColor] setFill];
+                if([today day] == day && [today month] == month && [today year] == year) {
+                    [[UIColor colorWithRed: 0.98 green: 0.24 blue: 0.09 alpha: 1] setFill];
+                } else {
+                    [[UIColor whiteColor] setFill];
+                }
                 [str drawInRect: dayHeader2Frame withFont: [UIFont fontWithName: @"Helvetica" size: 12] lineBreakMode: UILineBreakModeWordWrap alignment: UITextAlignmentCenter];
                 CGContextRestoreGState(context);
                 
