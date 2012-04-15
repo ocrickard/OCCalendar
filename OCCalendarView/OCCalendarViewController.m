@@ -33,10 +33,7 @@
 - (void)loadView {
     [super loadView];
     self.view.frame = parentView.frame;
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
+    
     
     //this view sits behind the calendar and receives touches.  It tells the calendar view to disappear when tapped.
     UIView *bgView = [[UIView alloc] initWithFrame:self.view.frame];
@@ -61,6 +58,10 @@
     
     calView = [[OCCalendarView alloc] initAtPoint:insertPoint withFrame:CGRectMake(insertPoint.x - arrowPosX, insertPoint.y - 31.4, width, height) arrowPosition:arrowPos];
     [self.view addSubview:[calView autorelease]];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
 }
 
 - (void)removeCalView {
