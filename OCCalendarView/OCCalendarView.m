@@ -58,19 +58,23 @@
     CGAffineTransform tranny = CGAffineTransformMakeScale(0.1, 0.1);
     self.transform = tranny;
     self.alpha = 0.0f;
-    
-    //Animate in the view.
-    [UIView beginAnimations:@"animateInCalendar" context:nil];
-    [UIView setAnimationDuration:0.4f];
-    self.transform = CGAffineTransformMakeScale(1.0, 1.0);
-    self.alpha = 1.0f;
-    [UIView commitAnimations];
+      
+    [self performSelector:@selector(animateIn)];
   }
   return self;
 }
 
 - (void)setFrame:(CGRect)frame {
     [super setFrame:frame];
+}
+
+- (void)animateIn {
+    //Animate in the view.
+    [UIView beginAnimations:@"animateInCalendar" context:nil];
+    [UIView setAnimationDuration:0.4f];
+    self.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
+    self.alpha = 1.0f;
+    [UIView commitAnimations];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
