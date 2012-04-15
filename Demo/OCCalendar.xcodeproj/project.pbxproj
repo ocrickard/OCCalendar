@@ -65,10 +65,10 @@
 		7B08B0D8152E203E00EACAC5 /* OCCalendarView */ = {
 			isa = PBXGroup;
 			children = (
-				7B08B0D9152E203E00EACAC5 /* OCCalendarView.h */,
-				7B08B0DA152E203E00EACAC5 /* OCCalendarView.m */,
 				7B08B0DB152E203E00EACAC5 /* OCCalendarViewController.h */,
 				7B08B0DC152E203E00EACAC5 /* OCCalendarViewController.m */,
+				7B08B0D9152E203E00EACAC5 /* OCCalendarView.h */,
+				7B08B0DA152E203E00EACAC5 /* OCCalendarView.m */,
 				7B08B0DD152E203E00EACAC5 /* OCDaysView.h */,
 				7B08B0DE152E203E00EACAC5 /* OCDaysView.m */,
 				7B08B0DF152E203E00EACAC5 /* OCSelectionView.h */,
