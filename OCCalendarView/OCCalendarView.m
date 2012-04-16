@@ -18,7 +18,7 @@
 }
 
 - (id)initAtPoint:(CGPoint)p withFrame:(CGRect)frame arrowPosition:(OCArrowPosition)arrowPos {
-  NSLog(@"Arrow Position: %u", arrowPos);
+  //NSLog(@"Arrow Position: %u", arrowPos);
   
   //    CGRect frame = CGRectMake(p.x - 390*0.5, p.y - 31.4, 390, 270);
   self = [super initWithFrame:frame];
@@ -140,6 +140,8 @@
     int day = 1;
     int month = currentMonth;
     int year = currentYear;
+    
+    //NSLog(@"startCurrentMonth:%d", currentMonth);
 	
 	//Get the first day of the month
 	NSDateComponents *dateParts = [[NSDateComponents alloc] init];
@@ -156,17 +158,23 @@
                                        forDate:dateOnFirst].length;
     
     if(startPoint.y == 0 && startPoint.x+1 < weekdayOfFirst) {
-        day = startPoint.x - weekdayOfFirst+2;
+        day = startPoint.x - weekdayOfFirst + 2;
     } else {
         int countDays = 1;
         for (int i = 0; i < 6; i++) {
             for(int j = 0; j < 7; j++) {
                 int dayNumber = i * 7 + j;
-                if(dayNumber >= (weekdayOfFirst - 1) && day <= numDaysInMonth) {
+                if(dayNumber >= (weekdayOfFirst - 1)) {
                     if(i == startPoint.y && j == startPoint.x) {
                         day = countDays;
                     }
                     ++countDays;
+                } else if(countDays > numDaysInMonth) {
+                    if(i == startPoint.y && j == startPoint.x) {
+                        day = (countDays - numDaysInMonth);
+                        month = currentMonth + 1;
+                    }
+                    countDays++;
                 }
             }
         }
@@ -184,9 +192,13 @@
 - (NSDate *)getEndDate {
     CGPoint endPoint = [selectionView endPoint];
     
+    //NSLog(@"endPoint:(%f,%f)", endPoint.x, endPoint.y);
+    
     int day = 1;
     int month = currentMonth;
     int year = currentYear;
+    
+    //NSLog(@"endCurrentMonth:%d", currentMonth);
 	
 	//Get the first day of the month
 	NSDateComponents *dateParts = [[NSDateComponents alloc] init];
@@ -202,17 +214,25 @@
 										inUnit:NSMonthCalendarUnit 
                                        forDate:dateOnFirst].length;
 	if(endPoint.y == 0 && endPoint.x+1 < weekdayOfFirst) {
-        day = endPoint.x - weekdayOfFirst+2;
+        day = endPoint.x - weekdayOfFirst + 2;
     } else {
         int countDays = 1;
         for (int i = 0; i < 6; i++) {
             for(int j = 0; j < 7; j++) {
                 int dayNumber = i * 7 + j;
-                if(dayNumber >= (weekdayOfFirst - 1) && day <= numDaysInMonth) {
+                if(dayNumber >= (weekdayOfFirst - 1) && countDays <= numDaysInMonth) {
                     if(i == endPoint.y && j == endPoint.x) {
                         day = countDays;
+                        
+                        //NSLog(@"endDay:%d", day);
                     }
                     ++countDays;
+                } else if(countDays > numDaysInMonth) {
+                    if(i == endPoint.y && j == endPoint.x) {
+                        day = (countDays - numDaysInMonth);
+                        month = currentMonth + 1;
+                    }
+                    countDays++;
                 }
             }
         }
@@ -228,6 +248,8 @@
 }
 
 - (void)setStartDate:(NSDate *)sDate {
+    //NSLog(@"setStartDate");
+    
     NSDateComponents *sComponents = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:sDate];
     
     if([sComponents month] != currentMonth) {
@@ -281,6 +303,7 @@
 }
 
 - (void)setEndDate:(NSDate *)eDate {
+    //NSLog(@"setEndDate");
     NSDateComponents *eComponents = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:eDate];
     
     if([eComponents month] != currentMonth) {
@@ -385,7 +408,7 @@
     }
     
     if([daysView addExtraRow]) {
-        NSLog(@"Added extra row");
+        //NSLog(@"Added extra row");
         [roundedRectanglePath moveToPoint: CGPointMake(42, 267.42)];
         [roundedRectanglePath addCurveToPoint: CGPointMake(52, 278.4) controlPoint1: CGPointMake(42, 273.49) controlPoint2: CGPointMake(46.48, 278.4)];
         [roundedRectanglePath addLineToPoint: CGPointMake(361.5, 278.4)];
@@ -411,7 +434,7 @@
         [roundedRectanglePath addLineToPoint: CGPointMake(52, 43.9)];
         [roundedRectanglePath addCurveToPoint: CGPointMake(42, 53.9) controlPoint1: CGPointMake(46.48, 43.9) controlPoint2: CGPointMake(42, 48.38)];
         [roundedRectanglePath addLineToPoint: CGPointMake(42, 246.4)];
-        NSLog(@"did not add extra row");
+        //NSLog(@"did not add extra row");
     }
     
     [roundedRectanglePath closePath];

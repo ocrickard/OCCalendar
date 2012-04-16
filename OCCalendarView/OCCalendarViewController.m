@@ -89,8 +89,10 @@
 }
 
 - (void)removeCalView {
-    self.startDate = [calView getStartDate];
-    self.endDate = [calView getEndDate];
+    startDate = [[calView getStartDate] retain];
+    endDate = [[calView getEndDate] retain];
+    
+    //NSLog(@"startDate:%@ endDate:%@", startDate.description, endDate.description);
     
     [calView removeFromSuperview];
     calView = nil;

@@ -73,6 +73,7 @@
             
             if(endCellY == i) {
                 thisRowEndCell = endCellX;
+//            } else {
                 if (startCellY > endCellY) {
                     thisRowStartCell = endCellX; thisRowEndCell = 6;
                 }

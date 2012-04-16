@@ -54,13 +54,13 @@
 	NSDateComponents *weekdayComponents = [calendar components:NSWeekdayCalendarUnit fromDate:dateOnFirst];
 	int weekdayOfFirst = [weekdayComponents weekday];	
     
-    NSLog(@"weekdayOfFirst:%d", weekdayOfFirst);
+    //NSLog(@"weekdayOfFirst:%d", weekdayOfFirst);
 
 	int numDaysInMonth = [calendar rangeOfUnit:NSDayCalendarUnit 
 										inUnit:NSMonthCalendarUnit 
                                        forDate:dateOnFirst].length;
     
-    NSLog(@"month:%d, numDaysInMonth:%d", currentMonth, numDaysInMonth);
+    //NSLog(@"month:%d, numDaysInMonth:%d", currentMonth, numDaysInMonth);
     
     CGContextRef context = UIGraphicsGetCurrentContext();
     
@@ -130,7 +130,7 @@
                 
                 if(i == 5) {
                     didAddExtraRow = YES;
-                    NSLog(@"didAddExtraRow");
+                    //NSLog(@"didAddExtraRow");
                 }
                 
 				++day;
@@ -206,7 +206,7 @@
 			if(dayNumber >= (weekdayOfFirst - 1) && day <= numDaysInMonth) {
                 if(i == 5) {
                     didAddExtraRow = YES;
-                    NSLog(@"didAddExtraRow");
+                    //NSLog(@"didAddExtraRow");
                 }
 				++day;
 			}
