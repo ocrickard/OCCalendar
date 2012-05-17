@@ -24,7 +24,7 @@
 
 -(void) setSelectionMode:(OCSelectionMode)selectionMode {
     _selectionMode = selectionMode;
-//    selectionView.selectionMode = _selectionMode;
+   selectionView.selectionMode = _selectionMode;
 }
 - (id)initAtPoint:(CGPoint)p withFrame:(CGRect)frame {
   return [self initAtPoint:p withFrame:frame arrowPosition:OCArrowPositionCentered];
