@@ -9,6 +9,7 @@
 #import "OCSelectionView.h"
 
 @implementation OCSelectionView
+@synthesize selectionMode = _selectionMode;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -80,9 +81,14 @@
             } else if (!(startCellY > endCellY)) {
                 thisRowEndCell = 6;
             }
-            
+            CGFloat cornerRadius;
+            if(_selectionMode == OCSelectionSingleDate) {
+                cornerRadius = 0.0;
+            } else {
+                cornerRadius = 10.0;
+            }
             //// selectedRect Drawing
-            UIBezierPath* selectedRectPath = [UIBezierPath bezierPathWithRoundedRect: CGRectMake(MIN(thisRowStartCell, thisRowEndCell)*hDiff, i*vDiff, (ABS(thisRowEndCell-thisRowStartCell))*hDiff+20, 21) cornerRadius: 10];
+            UIBezierPath* selectedRectPath = [UIBezierPath bezierPathWithRoundedRect: CGRectMake(MIN(thisRowStartCell, thisRowEndCell)*hDiff, i*vDiff, (ABS(thisRowEndCell-thisRowStartCell))*hDiff+20, 21) cornerRadius: cornerRadius];
             CGContextSaveGState(context);
             [selectedRectPath addClip];
             CGContextDrawLinearGradient(context, gradient3, CGPointMake((MIN(thisRowStartCell, thisRowEndCell)+.5)*hDiff, (i+1)*vDiff), CGPointMake((MIN(thisRowStartCell, thisRowEndCell)+.5)*hDiff, i*vDiff), 0);
@@ -101,7 +107,7 @@
     }
 }
 
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+-(void) singleSelection:(NSSet *)touches {
     selected = YES;
     
     UITouch *touch = [touches anyObject];
@@ -115,9 +121,17 @@
     endCellY = startCellY;
     
     [self setNeedsDisplay];
+    
+}
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    [self singleSelection:touches];
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+    if(_selectionMode == OCSelectionSingleDate) {
+        [self singleSelection:touches];
+        return;
+    }
     UITouch *touch = [touches anyObject];
     
     CGPoint point = [touch locationInView:self];
@@ -131,6 +145,10 @@
 }
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    if(_selectionMode == OCSelectionSingleDate) {
+        [self singleSelection:touches];
+        return;
+    }
     UITouch *touch = [touches anyObject];
     
     CGPoint point = [touch locationInView:self];

@@ -11,8 +11,21 @@
 #import "OCDaysView.h"
 #import <QuartzCore/QuartzCore.h>
 
+@interface OCCalendarView () {
+    OCSelectionMode _selectionMode;
+}
+@end
+
 @implementation OCCalendarView
 
+-(OCSelectionMode) selectionMode {
+    return _selectionMode;
+}
+
+-(void) setSelectionMode:(OCSelectionMode)selectionMode {
+    _selectionMode = selectionMode;
+//    selectionView.selectionMode = _selectionMode;
+}
 - (id)initAtPoint:(CGPoint)p withFrame:(CGRect)frame {
   return [self initAtPoint:p withFrame:frame arrowPosition:OCArrowPositionCentered];
 }
@@ -353,6 +366,9 @@
     [daysView setYear:currentYear];
     [daysView resetRows];
     [daysView setNeedsDisplay];
+    if(_selectionMode == OCSelectionSingleDate) {
+        [self setStartDate:[self getEndDate]];
+    }
 }
 
 - (void)drawRect:(CGRect)rect
