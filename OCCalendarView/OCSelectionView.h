@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "OCTypes.h"
 @interface OCSelectionView : UIView {
     BOOL selected;
     int startCellX;
@@ -29,5 +29,6 @@
 
 -(void)setStartPoint:(CGPoint)sPoint;
 -(void)setEndPoint:(CGPoint)ePoint;
+@property(nonatomic, assign) OCSelectionMode selectionMode;
 
 @end
