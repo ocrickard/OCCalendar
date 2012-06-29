@@ -8,15 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "OCCalendarView.h"
+#import "OCCalendarDelegate.h"
 
 @class OCCalendarView;
-
-@protocol OCCalendarDelegate <NSObject>
-
-@optional
--(void)completedWithStartDate:(NSDate *)startDate endDate:(NSDate *)endDate;
-
-@end
 
 @interface OCCalendarViewController : UIViewController <UIGestureRecognizerDelegate> {
     id <OCCalendarDelegate> delegate;
