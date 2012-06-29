@@ -20,6 +20,7 @@
     
     float hDiff;
     float vDiff;
+
 }
 
 - (void)resetSelection;

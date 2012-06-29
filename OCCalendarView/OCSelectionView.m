@@ -23,8 +23,8 @@
         endCellX = -1;
         endCellY = -1;
         
-        hDiff = 43;
-        vDiff = 30;
+        hDiff = frame.size.width / 7;
+        vDiff = frame.size.height / 6;
         
         self.userInteractionEnabled = YES;
         
@@ -113,6 +113,8 @@
     
     endCellX = MIN(startCellX,6);
     endCellY = startCellY;
+    
+    NSLog(@"touchBegan start(%d,%d), end(%d,%d)",startCellX,startCellY,endCellX,endCellY);
     
     [self setNeedsDisplay];
 }

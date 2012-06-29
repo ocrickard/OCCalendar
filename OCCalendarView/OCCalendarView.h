@@ -9,9 +9,10 @@
 #import <UIKit/UIKit.h>
 
 typedef enum {
-  OCArrowPositionLeft = -1,
-  OCArrowPositionCentered = 0,
-  OCArrowPositionRight = 1
+    OCArrowPositionLeft = -1,
+    OCArrowPositionCentered = 0,
+    OCArrowPositionRight = 1,
+    OCArrowPositionNone = NSIntegerMax
 } OCArrowPosition;
 
 @class OCSelectionView;
@@ -36,7 +37,12 @@ typedef enum {
     OCDaysView *daysView;
     
     int arrowPosition;
+    UIColor *calendarColor;
+    UIColor *calendarTextColor;
 }
+
+@property (nonatomic, retain) UIColor       *calendarColor;
+@property (nonatomic, retain) UIColor       *calendarTextColor;
 
 - (id)initAtPoint:(CGPoint)p withFrame:(CGRect)frame;
 - (id)initAtPoint:(CGPoint)p withFrame:(CGRect)frame arrowPosition:(OCArrowPosition)arrowPos;

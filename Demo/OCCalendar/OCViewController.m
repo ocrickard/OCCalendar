@@ -49,10 +49,10 @@
     
     [self.view addSubview:[bgView autorelease]];
     
-    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSCalendar *calendar = [[[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar] autorelease];
     
     //Here's where the magic happens
-    calVC = [[OCCalendarViewController alloc] initAtPoint:CGPointMake(150, 50) inView:self.view arrowPosition:OCArrowPositionLeft];
+    calVC = [[OCCalendarViewController alloc] initAtPoint:CGPointMake(150, 50) inView:self.view arrowPosition:OCArrowPositionCentered];
     calVC.delegate = self;
     //Now we're going to optionally set the start and end date of a pre-selected range.
     //This is totally optional.
@@ -149,7 +149,7 @@
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     CGPoint insertPoint = [touch locationInView:self.view];
     
-    calVC = [[OCCalendarViewController alloc] initAtPoint:insertPoint inView:self.view arrowPosition:OCArrowPositionRight];
+    calVC = [[OCCalendarViewController alloc] initAtPoint:insertPoint inView:self.view arrowPosition:OCArrowPositionCentered];
     calVC.delegate = self;
     [self.view addSubview:calVC.view];
     

@@ -20,6 +20,9 @@
     float hDiff;
     float vDiff;
     
+    float cellWidth;
+    float cellHeight;
+    
     int currentMonth;
     int currentYear;
     
