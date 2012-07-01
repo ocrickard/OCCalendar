@@ -45,6 +45,7 @@
 		B1558BEF152648CB00326469 /* OCViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OCViewController.m; sourceTree = "<group>"; };
 		B1558BF2152648CB00326469 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/OCViewController.xib; sourceTree = "<group>"; };
 		B1D629951526926D005F7283 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		D08C4F30159E6FB9009FBE58 /* OCCalendarDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCCalendarDelegate.h; sourceTree = "<group>"; };
 		D0979B2E159DEB3600167CBE /* OCConstant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCConstant.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -67,6 +68,7 @@
 			isa = PBXGroup;
 			children = (
 				D0979B2E159DEB3600167CBE /* OCConstant.h */,
+				D08C4F30159E6FB9009FBE58 /* OCCalendarDelegate.h */,
 				7B08B0DB152E203E00EACAC5 /* OCCalendarViewController.h */,
 				7B08B0DC152E203E00EACAC5 /* OCCalendarViewController.m */,
 				7B08B0D9152E203E00EACAC5 /* OCCalendarView.h */,
