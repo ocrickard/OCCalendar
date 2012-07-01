@@ -12,13 +12,15 @@
 
 @optional
 
+// impl this method for single selection, otherwise multiple date selection will be default choise
 - (BOOL)shouldBeSingleSelection;
-- (void)selectingWithStartDate:(NSData *)startDate endDate:(NSData *)endDate;
+// just selected the date(which will be triggered after touch end on OCSelectionView)
+- (void)selectingWithStartDate:(NSDate *)startDate endDate:(NSDate *)endDate;
 - (void)completedWithStartDate:(NSDate *)startDate endDate:(NSDate *)endDate;
 
 - (UIColor*)getCalendarBackgroundColor;
-- (UIColor*)getCalendarTextColor;
-
+- (UIColor*)getDateSelectionColor;
+- (UIColor*)getTodayColor;
 
 @end
 

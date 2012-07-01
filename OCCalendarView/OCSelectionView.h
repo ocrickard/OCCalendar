@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "OCCalendarDelegate.h"
 
 @interface OCSelectionView : UIView {
     BOOL selected;
@@ -22,6 +23,8 @@
     float vDiff;
 
 }
+
+@property (nonatomic, assign) id<OCCalendarDelegate>    delegate;
 
 - (void)resetSelection;
 

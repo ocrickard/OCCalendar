@@ -14,7 +14,7 @@
 
 @implementation OCCalendarView
 
-@synthesize calendarColor, calendarTextColor;
+@synthesize delegate;
 
 - (id)initAtPoint:(CGPoint)p withFrame:(CGRect)frame {
     return [self initAtPoint:p withFrame:frame arrowPosition:OCArrowPositionCentered];
@@ -57,8 +57,6 @@
         
         selectionView.frame = CGRectMake(MARGIN_LEFT, DEFAULT_DAYS_VIEW_Y, hDiff * 7, ([daysView addExtraRow] ? 6 : 5)*vDiff);
         
-        self.calendarColor = [UIColor colorWithRed:.3 green:.4 blue:.4 alpha:1];
-        
         //Make the view really small and invisible
         CGAffineTransform tranny = CGAffineTransformMakeScale(0.1, 0.1);
         self.transform = tranny;
@@ -69,10 +67,6 @@
     return self;
 }
 
-- (void)setFrame:(CGRect)frame {
-    [super setFrame:frame];
-}
-
 - (void)animateIn {
     //Animate in the view.
     [UIView beginAnimations:@"animateInCalendar" context:nil];
@@ -80,54 +74,6 @@
     self.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
     self.alpha = 1.0f;
     [UIView commitAnimations];
-}
-
-- (CGRect)getLeftArrowRect {
-    float x = MARGIN_LEFT;
-    float y = MARGIN_TOP + ANCHOR_HEIGHT;
-    return CGRectMake(x, y, DEFAULT_ARROWBOX_WIDTH, DEFAULT_ARROWBOX_HEIGHT);
-}
-
-- (CGRect)getRightArrowRect {
-    float x = self.frame.size.width - MARGIN_RIGHT - hDiff;
-    float y = MARGIN_TOP + ANCHOR_HEIGHT;
-    return CGRectMake(x, y, DEFAULT_ARROWBOX_WIDTH, DEFAULT_ARROWBOX_HEIGHT);    
-}
-
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    UITouch *touch = [touches anyObject];
-    CGPoint point = [touch locationInView:self];
-    if(CGRectContainsPoint([self getLeftArrowRect], point)) {
-        //User tapped the prevMonth button
-        if(currentMonth == 1) {
-            currentMonth = 12;
-            currentYear--;
-        } else {
-            currentMonth--;
-        }
-        [UIView beginAnimations:@"fadeOutViews" context:nil];
-        [UIView setAnimationDuration:0.1f];
-        [daysView setAlpha:0.0f];
-        [selectionView setAlpha:0.0f];
-        [UIView commitAnimations];
-        
-        [self performSelector:@selector(resetViews) withObject:nil afterDelay:0.1f];
-    } else if(CGRectContainsPoint([self getRightArrowRect], point)) {
-        //User tapped the nextMonth button
-        if(currentMonth == 12) {
-            currentMonth = 1;
-            currentYear++;
-        } else {
-            currentMonth++;
-        }
-        [UIView beginAnimations:@"fadeOutViews" context:nil];
-        [UIView setAnimationDuration:0.1f];
-        [daysView setAlpha:0.0f];
-        [selectionView setAlpha:0.0f];
-        [UIView commitAnimations];
-        
-        [self performSelector:@selector(resetViews) withObject:nil afterDelay:0.1f];
-    }
 }
 
 - (void)resetViews {
@@ -147,10 +93,34 @@
     [UIView commitAnimations];
 }
 
+
+#pragma mark - Getter/Setter
+
+- (void)setFrame:(CGRect)frame {
+    [super setFrame:frame];
+}
+
+- (void)setCalendarDelegate:(id<OCCalendarDelegate>)d {
+    delegate = d;
+    selectionView.delegate = d;
+    daysView.delegate = d;
+}
+
+- (CGRect)getLeftArrowRect {
+    float x = MARGIN_LEFT;
+    float y = MARGIN_TOP + ANCHOR_HEIGHT;
+    return CGRectMake(x, y, DEFAULT_ARROWBOX_WIDTH, DEFAULT_ARROWBOX_HEIGHT);
+}
+
+- (CGRect)getRightArrowRect {
+    float x = self.frame.size.width - MARGIN_RIGHT - hDiff;
+    float y = MARGIN_TOP + ANCHOR_HEIGHT;
+    return CGRectMake(x, y, DEFAULT_ARROWBOX_WIDTH, DEFAULT_ARROWBOX_HEIGHT);    
+}
+
 - (void)setArrowPosition:(OCArrowPosition)pos {
     arrowPosition = pos;
 }
-
 
 - (NSDate *)getStartDate {
     CGPoint startPoint = [selectionView startPoint];
@@ -373,6 +343,77 @@
     [daysView setNeedsDisplay];
 }
 
+#pragma mark - Touch events
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    UITouch *touch = [touches anyObject];
+    CGPoint point = [touch locationInView:self];
+    if(CGRectContainsPoint([self getLeftArrowRect], point)) {
+        //User tapped the prevMonth button
+        if(currentMonth == 1) {
+            currentMonth = 12;
+            currentYear--;
+        } else {
+            currentMonth--;
+        }
+        [UIView beginAnimations:@"fadeOutViews" context:nil];
+        [UIView setAnimationDuration:0.1f];
+        [daysView setAlpha:0.0f];
+        [selectionView setAlpha:0.0f];
+        [UIView commitAnimations];
+        
+        [self performSelector:@selector(resetViews) withObject:nil afterDelay:0.1f];
+    } else if(CGRectContainsPoint([self getRightArrowRect], point)) {
+        //User tapped the nextMonth button
+        if(currentMonth == 12) {
+            currentMonth = 1;
+            currentYear++;
+        } else {
+            currentMonth++;
+        }
+        [UIView beginAnimations:@"fadeOutViews" context:nil];
+        [UIView setAnimationDuration:0.1f];
+        [daysView setAlpha:0.0f];
+        [selectionView setAlpha:0.0f];
+        [UIView commitAnimations];
+        
+        [self performSelector:@selector(resetViews) withObject:nil afterDelay:0.1f];
+    } 
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    UITouch *touch = [touches anyObject];
+    CGPoint point = [touch locationInView:self];
+    
+    if(CGRectContainsPoint(selectionView.frame, point)) {
+        BOOL isSingleSelection = delegate && [delegate respondsToSelector:@selector(shouldBeSingleSelection)];
+        isSingleSelection = isSingleSelection ? [delegate shouldBeSingleSelection] : isSingleSelection;
+        
+        if (delegate && [delegate respondsToSelector:@selector(selectingWithStartDate:endDate:)]) {
+            NSDate *startDate = [[self getStartDate] retain];
+            NSDate *endDate = [[self getEndDate] retain];
+            
+            if (isSingleSelection) {
+                if ([startDate compare:endDate] == NSOrderedSame) {
+                    [delegate selectingWithStartDate:startDate endDate:endDate];
+                }
+            } else {
+                if([startDate compare:endDate] == NSOrderedAscending)
+                    [delegate selectingWithStartDate:startDate endDate:endDate];
+                else
+                    [delegate selectingWithStartDate:endDate endDate:startDate];
+            }
+            
+            NSLog(@"In SelectionView at date (%@,%@)",startDate,endDate);
+            [startDate release];
+            [endDate release];
+        }
+    }
+}
+
+
+#pragma mark - Draw
+
 - (void)drawRect:(CGRect)rect
 {    
     NSLog(@"draw in rect(%f,%f,%f,%f)",rect.origin.x,rect.origin.y,rect.size.width,rect.size.height);
@@ -389,13 +430,15 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     
     //// Color Declarations
-    CGFloat red = 0.0, green = 0.0, blue = 0.0, alpha =0.0;
-    [calendarColor getRed:&red green:&green blue:&blue alpha:&alpha];
+    CGFloat red = 1.0, green = 1.0, blue = 1.0, alpha =0.0;
+    if (delegate && [delegate respondsToSelector:@selector(getCalendarBackgroundColor)]) {
+        [[delegate getCalendarBackgroundColor] getRed:&red green:&green blue:&blue alpha:&alpha];
+    }
     UIColor* bigBoxInnerShadowColor = [UIColor colorWithRed:red green:green blue:blue alpha: 0.56];
     UIColor* backgroundLightColor = [UIColor colorWithRed: red green: green blue: blue alpha: 1];
     UIColor* lineLightColor = [UIColor colorWithRed: red green: green blue: blue alpha: 0.27];
-    UIColor* lightColor = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 0.15];
-    UIColor* darkColor = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 0.72];
+    UIColor* lightColor = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 0.8];
+    UIColor* darkColor = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 1];
     UIColor* boxStroke = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 0.59];
     
     //// Gradient Declarations
@@ -584,8 +627,6 @@
 - (void)dealloc {
     [selectionView release];
     [calendar release];
-    [calendarColor release];
-    [calendarTextColor release];
     [super dealloc];
     
 }

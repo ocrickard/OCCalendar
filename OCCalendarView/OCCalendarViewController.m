@@ -73,6 +73,7 @@
     if(self.endDate) {
         [calView setEndDate:endDate];
     }
+    calView.delegate = self.delegate;
     [self.view addSubview:[calView autorelease]];
 }
 
@@ -102,7 +103,7 @@
     startDate = [[calView getStartDate] retain];
     endDate = [[calView getEndDate] retain];
     
-    //NSLog(@"startDate:%@ endDate:%@", startDate.description, endDate.description);
+    NSLog(@"startDate:%@ endDate:%@", startDate.description, endDate.description);
     
     [calView removeFromSuperview];
     calView = nil;
@@ -132,6 +133,7 @@
         int height = calendarHeight;
         
         calView = [[OCCalendarView alloc] initAtPoint:point withFrame:CGRectMake(point.x - width*0.5, point.y - 31.4, width, height)];
+        calView.delegate = self.delegate;
         [self.view addSubview:[calView autorelease]];
     }
     

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "OCCalendarDelegate.h"
 
 typedef enum {
     OCArrowPositionLeft = -1,
@@ -37,12 +38,9 @@ typedef enum {
     OCDaysView *daysView;
     
     int arrowPosition;
-    UIColor *calendarColor;
-    UIColor *calendarTextColor;
 }
 
-@property (nonatomic, retain) UIColor       *calendarColor;
-@property (nonatomic, retain) UIColor       *calendarTextColor;
+@property (nonatomic, assign, setter = setCalendarDelegate:) id<OCCalendarDelegate>    delegate;
 
 - (id)initAtPoint:(CGPoint)p withFrame:(CGRect)frame;
 - (id)initAtPoint:(CGPoint)p withFrame:(CGRect)frame arrowPosition:(OCArrowPosition)arrowPos;
@@ -55,5 +53,7 @@ typedef enum {
 
 - (void)setStartDate:(NSDate *)sDate;
 - (void)setEndDate:(NSDate *)eDate;
+
+- (void)setCalendarDelegate:(id<OCCalendarDelegate>)d;
 
 @end

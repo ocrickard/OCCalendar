@@ -10,6 +10,8 @@
 
 @implementation OCDaysView
 
+@synthesize delegate;
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -118,7 +120,11 @@
                 CGContextSetShadowWithColor(context, shadow2Offset, shadow2BlurRadius, shadow2);
                 CGRect dayHeader2Frame = CGRectMake(j*hDiff, i*vDiff, cellWidth, cellHeight);
                 if([today day] == day && [today month] == month && [today year] == year) {
-                    [[UIColor colorWithRed: 0.98 green: 0.24 blue: 0.09 alpha: 1] setFill];
+                    CGFloat red = 0.98, green = 0.24, blue = 0.09, alpha =0.0;
+                    if (delegate && [delegate respondsToSelector:@selector(getTodayColor)]) {
+                        [[delegate getTodayColor] getRed:&red green:&green blue:&blue alpha:&alpha];
+                    }
+                    [[UIColor colorWithRed: red green: green blue: blue alpha: 1] setFill];
                 } else {
                     [[UIColor whiteColor] setFill];
                 }

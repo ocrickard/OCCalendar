@@ -86,8 +86,11 @@
 - (void)completedWithStartDate:(NSDate *)startDate endDate:(NSDate *)endDate {
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
     [df setDateStyle:NSDateFormatterShortStyle];
-    
     [self showToolTip:[NSString stringWithFormat:@"%@ - %@", [df stringFromDate:startDate], [df stringFromDate:endDate]]];
+    NSLog(@"startDate %@, print startDate %@",startDate,[df stringFromDate:startDate]);
+    NSLog(@"testDate %@, print testtDate %@",[NSDate date],[df stringFromDate:[NSDate date]]);
+    NSTimeZone *localTime = [NSTimeZone systemTimeZone];
+    NSLog(@"Current local timezone  is  %@",[localTime name]);
     
     [df release];
     
@@ -98,6 +101,29 @@
     calVC = nil;
 }
 
+- (void)selectingWithStartDate:(NSDate *)startDate endDate:(NSDate *)endDate {
+    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    [df setDateStyle:NSDateFormatterShortStyle];
+    [self showToolTip:[NSString stringWithFormat:@"%@ - %@", [df stringFromDate:startDate], [df stringFromDate:endDate]]];
+    
+    [df release];
+}
+
+- (BOOL)shouldBeSingleSelection {
+    return YES;
+}
+
+- (UIColor*)getCalendarBackgroundColor {
+    return [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 0.86];
+}
+
+- (UIColor*)getDateSelectionColor {
+    return [UIColor colorWithRed: 0.55 green: 0.86 blue: 0.1 alpha: 0.86];
+}
+
+- (UIColor*)getTodayColor {
+    return [UIColor brownColor];
+}
 
 #pragma mark - 
 #pragma mark Prettifying Methods...
