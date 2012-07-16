@@ -7,6 +7,7 @@
 //
 
 #import "OCCalendarViewController.h"
+#import "OCConstant.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface OCCalendarViewController ()
@@ -15,19 +16,28 @@
 
 @implementation OCCalendarViewController
 @synthesize delegate, startDate, endDate;
+@synthesize calendarWidth, calendarHeight;
 
 - (id)initAtPoint:(CGPoint)point inView:(UIView *)v arrowPosition:(OCArrowPosition)ap {
-  self = [super initWithNibName:nil bundle:nil];
-  if(self) {
-    insertPoint = point;
-    parentView = v;
-    arrowPos = ap;
-  }
-  return self;
+    self = [super initWithNibName:nil bundle:nil];
+    if(self) {
+        insertPoint = point;
+        parentView = v;
+        arrowPos = ap;
+
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            calendarWidth = DEFAULT_PHONE_WIDTH;
+            calendarHeight = DEFAULT_PHONE_HEIGHT;
+        } else {
+            calendarWidth = DEFAULT_PAD_WIDTH;
+            calendarHeight = DEFAULT_PAD_HEIGHT;
+        }
+    }
+    return self;
 }
 
 - (id)initAtPoint:(CGPoint)point inView:(UIView *)v {
-  return [self initAtPoint:point inView:v arrowPosition:OCArrowPositionCentered];
+    return [self initAtPoint:point inView:v arrowPosition:OCArrowPositionCentered];
 }
 
 - (void)loadView {
@@ -45,24 +55,25 @@
     
     [self.view addSubview:[bgView autorelease]];
     
-    int width = 390;
-    int height = 300;
+    int width = calendarWidth;
+    int height = calendarHeight;
     
-    float arrowPosX = 208;
+    float arrowPosX = width / 2;
     
     if(arrowPos == OCArrowPositionLeft) {
-        arrowPosX = 67;
+        arrowPosX = 30;
     } else if(arrowPos == OCArrowPositionRight) {
-        arrowPosX = 346;
+        arrowPosX = width - 30;
     }
     
-    calView = [[OCCalendarView alloc] initAtPoint:insertPoint withFrame:CGRectMake(insertPoint.x - arrowPosX, insertPoint.y - 31.4, width, height) arrowPosition:arrowPos];
+    calView = [[OCCalendarView alloc] initAtPoint:insertPoint withFrame:CGRectMake(insertPoint.x - arrowPosX, insertPoint.y, width, height) arrowPosition:arrowPos];
     if(self.startDate) {
         [calView setStartDate:startDate];
     }
     if(self.endDate) {
         [calView setEndDate:endDate];
     }
+    calView.delegate = self.delegate;
     [self.view addSubview:[calView autorelease]];
 }
 
@@ -92,7 +103,7 @@
     startDate = [[calView getStartDate] retain];
     endDate = [[calView getEndDate] retain];
     
-    //NSLog(@"startDate:%@ endDate:%@", startDate.description, endDate.description);
+    NSLog(@"startDate:%@ endDate:%@", startDate.description, endDate.description);
     
     [calView removeFromSuperview];
     calView = nil;
@@ -118,10 +129,11 @@
         
         //CGPoint insertPoint = CGPointMake(200+130*0.5, 200+10);
         CGPoint point = [touch locationInView:self.view];
-        int width = 390;
-        int height = 300;
+        int width = calendarWidth;
+        int height = calendarHeight;
         
         calView = [[OCCalendarView alloc] initAtPoint:point withFrame:CGRectMake(point.x - width*0.5, point.y - 31.4, width, height)];
+        calView.delegate = self.delegate;
         [self.view addSubview:[calView autorelease]];
     }
     

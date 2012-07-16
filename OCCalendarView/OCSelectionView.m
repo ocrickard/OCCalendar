@@ -10,6 +10,8 @@
 
 @implementation OCSelectionView
 
+@synthesize delegate;
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -23,8 +25,8 @@
         endCellX = -1;
         endCellY = -1;
         
-        hDiff = 43;
-        vDiff = 30;
+        hDiff = frame.size.width / 7;
+        vDiff = frame.size.height / 6;
         
         self.userInteractionEnabled = YES;
         
@@ -47,9 +49,16 @@
         CGFloat backgroundShadowBlurRadius = 5;
         
         UIColor* darkColor = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 0.72];
-        
-        UIColor* color = [UIColor colorWithRed: 0.82 green: 0.08 blue: 0 alpha: 0.86];
-        UIColor* color2 = [UIColor colorWithRed: 0.66 green: 0.02 blue: 0.04 alpha: 0.88];
+        CGFloat red = 0.82, green = 0.08, blue = 0.01;
+        if (delegate && [delegate respondsToSelector:@selector(getDateSelectionColor)]) {
+            const CGFloat *components = CGColorGetComponents([delegate getDateSelectionColor].CGColor);
+            red = components[0];
+            green = components[1];
+            blue = components[2];
+            //alpha = components[3];
+        }
+        UIColor* color = [UIColor colorWithRed: red green: green blue: blue alpha: 0.86];
+        UIColor* color2 = [UIColor colorWithRed: red - .2 green: green - 0.06 blue: blue + 0.04 alpha: 0.88];
         NSArray* gradient3Colors = [NSArray arrayWithObjects: 
                                     (id)color.CGColor, 
                                     (id)color2.CGColor, nil];
@@ -105,7 +114,6 @@
     selected = YES;
     
     UITouch *touch = [touches anyObject];
-    
     CGPoint point = [touch locationInView:self];
     
     startCellX = MIN((int)(point.x)/hDiff,6);
@@ -115,32 +123,46 @@
     endCellY = startCellY;
     
     [self setNeedsDisplay];
+    
+    // forward the touches to the OCCalendarView
+    [super touchesBegan:touches withEvent:event];
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-    UITouch *touch = [touches anyObject];
-    
-    CGPoint point = [touch locationInView:self];
-    
-    if(CGRectContainsPoint(self.bounds, point)) {
-        endCellX = MIN((int)(point.x)/hDiff,6);
-        endCellY = (int)(point.y)/vDiff;
+    BOOL isSingleSelection = delegate && [delegate respondsToSelector:@selector(shouldBeSingleSelection)];
+    isSingleSelection = isSingleSelection ? [delegate shouldBeSingleSelection] : isSingleSelection;
+
+    if (!isSingleSelection) {
+        UITouch *touch = [touches anyObject];
+        CGPoint point = [touch locationInView:self];
         
-        [self setNeedsDisplay];
+        if(CGRectContainsPoint(self.bounds, point)) {
+            endCellX = MIN((int)(point.x)/hDiff,6);
+            endCellY = (int)(point.y)/vDiff;
+            
+            [self setNeedsDisplay];
+        }
     }
 }
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     UITouch *touch = [touches anyObject];
-    
     CGPoint point = [touch locationInView:self];
     
-    if(CGRectContainsPoint(self.bounds, point)) {
-        endCellX = MIN((int)(point.x)/hDiff,6);
-        endCellY = (int)(point.y)/vDiff;
-        
-        [self setNeedsDisplay];
+    BOOL isSingleSelection = delegate && [delegate respondsToSelector:@selector(shouldBeSingleSelection)];
+    isSingleSelection = isSingleSelection ? [delegate shouldBeSingleSelection] : isSingleSelection;
+    
+    if (!isSingleSelection) {
+        if(CGRectContainsPoint(self.bounds, point)) {
+            endCellX = MIN((int)(point.x)/hDiff,6);
+            endCellY = (int)(point.y)/vDiff;
+            
+            [self setNeedsDisplay];
+        }
     }
+
+    // forward the touches to the OCCalendarView
+    [super touchesEnded:touches withEvent:event];
 }
 
 -(void)resetSelection {

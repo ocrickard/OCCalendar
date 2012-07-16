@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "OCCalendarDelegate.h"
 
 @interface OCDaysView : UIView {
     int startCellX;
@@ -20,11 +21,16 @@
     float hDiff;
     float vDiff;
     
+    float cellWidth;
+    float cellHeight;
+    
     int currentMonth;
     int currentYear;
     
     BOOL didAddExtraRow;
 }
+
+@property (nonatomic, assign) id<OCCalendarDelegate>    delegate;
 
 - (void)setMonth:(int)month;
 - (void)setYear:(int)year;

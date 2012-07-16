@@ -10,6 +10,8 @@
 
 @implementation OCDaysView
 
+@synthesize delegate;
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -21,8 +23,11 @@
         endCellX = 3;
         endCellY = 0;
         
-        hDiff = 43;
-        vDiff = 30;
+        hDiff = frame.size.width / 7;
+        vDiff = frame.size.height / 6;
+        
+        cellWidth = hDiff / 2;
+        cellHeight = vDiff / 2;
         
         self.backgroundColor = [UIColor clearColor];
     }
@@ -94,7 +99,7 @@
         
         CGContextSaveGState(context);
         CGContextSetShadowWithColor(context, shadow2Offset, shadow2BlurRadius, shadow2);
-        CGRect dayHeader2Frame = CGRectMake((i)*hDiff, 0, 21, 14);
+        CGRect dayHeader2Frame = CGRectMake((i)*hDiff, 0, cellWidth, cellHeight);
         [[UIColor colorWithWhite:0.6f alpha:1.0f] setFill];
         [str drawInRect: dayHeader2Frame withFont: [UIFont fontWithName: @"Helvetica" size: 12] lineBreakMode: UILineBreakModeWordWrap alignment: UITextAlignmentCenter];
         CGContextRestoreGState(context);
@@ -113,9 +118,17 @@
                 
                 CGContextSaveGState(context);
                 CGContextSetShadowWithColor(context, shadow2Offset, shadow2BlurRadius, shadow2);
-                CGRect dayHeader2Frame = CGRectMake(j*hDiff, i*vDiff, 21, 14);
+                CGRect dayHeader2Frame = CGRectMake(j*hDiff, i*vDiff, cellWidth, cellHeight);
                 if([today day] == day && [today month] == month && [today year] == year) {
-                    [[UIColor colorWithRed: 0.98 green: 0.24 blue: 0.09 alpha: 1] setFill];
+                    CGFloat red = 0.98, green = 0.24, blue = 0.09;
+                    if (delegate && [delegate respondsToSelector:@selector(getTodayColor)]) {
+                        const CGFloat *components = CGColorGetComponents([delegate getTodayColor].CGColor);
+                        red = components[0];
+                        green = components[1];
+                        blue = components[2];
+                        //alpha = components[3];
+                    }
+                    [[UIColor colorWithRed: red green: green blue: blue alpha: 1] setFill];
                 } else {
                     [[UIColor whiteColor] setFill];
                 }
@@ -160,7 +173,7 @@
             
             CGContextSaveGState(context);
             CGContextSetShadowWithColor(context, shadow2Offset, shadow2BlurRadius, shadow2);
-            CGRect dayHeader2Frame = CGRectMake((i)*hDiff, finalRow * vDiff, 21, 14);
+            CGRect dayHeader2Frame = CGRectMake((i)*hDiff, finalRow * vDiff, cellWidth, cellHeight);
             [[UIColor colorWithWhite:0.6f alpha:1.0f] setFill];
             [str drawInRect: dayHeader2Frame withFont: [UIFont fontWithName: @"Helvetica" size: 12] lineBreakMode: UILineBreakModeWordWrap alignment: UITextAlignmentCenter];
             CGContextRestoreGState(context);

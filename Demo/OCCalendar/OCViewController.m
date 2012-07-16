@@ -49,10 +49,10 @@
     
     [self.view addSubview:[bgView autorelease]];
     
-    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSCalendar *calendar = [[[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar] autorelease];
     
     //Here's where the magic happens
-    calVC = [[OCCalendarViewController alloc] initAtPoint:CGPointMake(150, 50) inView:self.view arrowPosition:OCArrowPositionLeft];
+    calVC = [[OCCalendarViewController alloc] initAtPoint:CGPointMake(150, 50) inView:self.view arrowPosition:OCArrowPositionCentered];
     calVC.delegate = self;
     //Now we're going to optionally set the start and end date of a pre-selected range.
     //This is totally optional.
@@ -86,8 +86,11 @@
 - (void)completedWithStartDate:(NSDate *)startDate endDate:(NSDate *)endDate {
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
     [df setDateStyle:NSDateFormatterShortStyle];
-    
     [self showToolTip:[NSString stringWithFormat:@"%@ - %@", [df stringFromDate:startDate], [df stringFromDate:endDate]]];
+    NSLog(@"startDate %@, print startDate %@",startDate,[df stringFromDate:startDate]);
+    NSLog(@"testDate %@, print testtDate %@",[NSDate date],[df stringFromDate:[NSDate date]]);
+    NSTimeZone *localTime = [NSTimeZone systemTimeZone];
+    NSLog(@"Current local timezone  is  %@",[localTime name]);
     
     [df release];
     
@@ -98,6 +101,29 @@
     calVC = nil;
 }
 
+- (void)selectingWithStartDate:(NSDate *)startDate endDate:(NSDate *)endDate {
+    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    [df setDateStyle:NSDateFormatterShortStyle];
+    [self showToolTip:[NSString stringWithFormat:@"%@ - %@", [df stringFromDate:startDate], [df stringFromDate:endDate]]];
+    
+    [df release];
+}
+
+- (BOOL)shouldBeSingleSelection {
+    return YES;
+}
+
+- (UIColor*)getCalendarBackgroundColor {
+    return [UIColor colorWithRed: 0.97 green: 0.61 blue: 0.68 alpha: 1];
+}
+
+- (UIColor*)getDateSelectionColor {
+    return [UIColor colorWithRed: 0.55 green: 0.86 blue: 0.1 alpha: 0.86];
+}
+
+- (UIColor*)getTodayColor {
+    return [UIColor brownColor];
+}
 
 #pragma mark - 
 #pragma mark Prettifying Methods...
@@ -149,7 +175,7 @@
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     CGPoint insertPoint = [touch locationInView:self.view];
     
-    calVC = [[OCCalendarViewController alloc] initAtPoint:insertPoint inView:self.view arrowPosition:OCArrowPositionRight];
+    calVC = [[OCCalendarViewController alloc] initAtPoint:insertPoint inView:self.view arrowPosition:OCArrowPositionCentered];
     calVC.delegate = self;
     [self.view addSubview:calVC.view];
     

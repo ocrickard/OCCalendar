@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "OCCalendarDelegate.h"
 
 typedef enum {
-  OCArrowPositionLeft = -1,
-  OCArrowPositionCentered = 0,
-  OCArrowPositionRight = 1
+    OCArrowPositionLeft = -1,
+    OCArrowPositionCentered = 0,
+    OCArrowPositionRight = 1,
+    OCArrowPositionNone = NSIntegerMax
 } OCArrowPosition;
 
 @class OCSelectionView;
@@ -38,10 +40,12 @@ typedef enum {
     int arrowPosition;
 }
 
+@property (nonatomic, assign, setter = setCalendarDelegate:) id<OCCalendarDelegate>    delegate;
+
 - (id)initAtPoint:(CGPoint)p withFrame:(CGRect)frame;
 - (id)initAtPoint:(CGPoint)p withFrame:(CGRect)frame arrowPosition:(OCArrowPosition)arrowPos;
 
-//Valid Positions: OCArrowPositionLeft, OCArrowPositionCentered, OCArrowPositionRight
+//Valid Positions: OCArrowPositionLeft, OCArrowPositionCentered, OCArrowPositionRight, OCArrowPositionNone
 - (void)setArrowPosition:(OCArrowPosition)pos;
 
 - (NSDate *)getStartDate;
@@ -49,5 +53,7 @@ typedef enum {
 
 - (void)setStartDate:(NSDate *)sDate;
 - (void)setEndDate:(NSDate *)eDate;
+
+- (void)setCalendarDelegate:(id<OCCalendarDelegate>)d;
 
 @end
