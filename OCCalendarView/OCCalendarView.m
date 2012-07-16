@@ -71,6 +71,7 @@
     //Animate in the view.
     [UIView beginAnimations:@"animateInCalendar" context:nil];
     [UIView setAnimationDuration:0.4f];
+    self.layer.anchorPoint = CGPointMake(0.5, 0);
     self.transform = CGAffineTransformMakeScale(1.0f, 1.0f);
     self.alpha = 1.0f;
     [UIView commitAnimations];
@@ -430,15 +431,19 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     
     //// Color Declarations
-    CGFloat red = 1.0, green = 1.0, blue = 1.0, alpha =0.0;
+    CGFloat red = 1.0, green = 1.0, blue = 1.0;
     if (delegate && [delegate respondsToSelector:@selector(getCalendarBackgroundColor)]) {
-        [[delegate getCalendarBackgroundColor] getRed:&red green:&green blue:&blue alpha:&alpha];
+        const CGFloat *components = CGColorGetComponents([delegate getCalendarBackgroundColor].CGColor);
+        red = components[0];
+        green = components[1];
+        blue = components[2];
+        //alpha = components[3];
     }
     UIColor* bigBoxInnerShadowColor = [UIColor colorWithRed:red green:green blue:blue alpha: 0.56];
     UIColor* backgroundLightColor = [UIColor colorWithRed: red green: green blue: blue alpha: 1];
     UIColor* lineLightColor = [UIColor colorWithRed: red green: green blue: blue alpha: 0.27];
-    UIColor* lightColor = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 0.8];
-    UIColor* darkColor = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 1];
+    UIColor* lightColor = [UIColor colorWithRed: red green: green blue: blue alpha: 0.2];
+    UIColor* darkColor = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: .6];
     UIColor* boxStroke = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 0.59];
     
     //// Gradient Declarations

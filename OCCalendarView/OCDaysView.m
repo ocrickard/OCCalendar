@@ -120,9 +120,13 @@
                 CGContextSetShadowWithColor(context, shadow2Offset, shadow2BlurRadius, shadow2);
                 CGRect dayHeader2Frame = CGRectMake(j*hDiff, i*vDiff, cellWidth, cellHeight);
                 if([today day] == day && [today month] == month && [today year] == year) {
-                    CGFloat red = 0.98, green = 0.24, blue = 0.09, alpha =0.0;
+                    CGFloat red = 0.98, green = 0.24, blue = 0.09;
                     if (delegate && [delegate respondsToSelector:@selector(getTodayColor)]) {
-                        [[delegate getTodayColor] getRed:&red green:&green blue:&blue alpha:&alpha];
+                        const CGFloat *components = CGColorGetComponents([delegate getTodayColor].CGColor);
+                        red = components[0];
+                        green = components[1];
+                        blue = components[2];
+                        //alpha = components[3];
                     }
                     [[UIColor colorWithRed: red green: green blue: blue alpha: 1] setFill];
                 } else {

@@ -114,7 +114,7 @@
 }
 
 - (UIColor*)getCalendarBackgroundColor {
-    return [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 0.86];
+    return [UIColor colorWithRed: 0.97 green: 0.61 blue: 0.68 alpha: 1];
 }
 
 - (UIColor*)getDateSelectionColor {

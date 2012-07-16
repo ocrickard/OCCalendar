@@ -49,10 +49,13 @@
         CGFloat backgroundShadowBlurRadius = 5;
         
         UIColor* darkColor = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 0.72];
-        CGFloat red = 0.82, green = 0.08, blue = 0.01, alpha =0.0;
+        CGFloat red = 0.82, green = 0.08, blue = 0.01;
         if (delegate && [delegate respondsToSelector:@selector(getDateSelectionColor)]) {
-            [[delegate getDateSelectionColor] getRed:&red green:&green blue:&blue alpha:&alpha];
-            NSLog(@"rgb(%f,%f,%f)",red,green,blue);
+            const CGFloat *components = CGColorGetComponents([delegate getDateSelectionColor].CGColor);
+            red = components[0];
+            green = components[1];
+            blue = components[2];
+            //alpha = components[3];
         }
         UIColor* color = [UIColor colorWithRed: red green: green blue: blue alpha: 0.86];
         UIColor* color2 = [UIColor colorWithRed: red - .2 green: green - 0.06 blue: blue + 0.04 alpha: 0.88];

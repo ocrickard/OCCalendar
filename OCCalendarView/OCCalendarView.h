@@ -45,7 +45,7 @@ typedef enum {
 - (id)initAtPoint:(CGPoint)p withFrame:(CGRect)frame;
 - (id)initAtPoint:(CGPoint)p withFrame:(CGRect)frame arrowPosition:(OCArrowPosition)arrowPos;
 
-//Valid Positions: OCArrowPositionLeft, OCArrowPositionCentered, OCArrowPositionRight
+//Valid Positions: OCArrowPositionLeft, OCArrowPositionCentered, OCArrowPositionRight, OCArrowPositionNone
 - (void)setArrowPosition:(OCArrowPosition)pos;
 
 - (NSDate *)getStartDate;
