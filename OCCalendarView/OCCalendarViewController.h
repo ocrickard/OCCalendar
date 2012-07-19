@@ -35,6 +35,7 @@
     NSDate *endDate;
 }
 
+@property (nonatomic, assign) BOOL autoSelectDate;
 @property (nonatomic, assign) id <OCCalendarDelegate> delegate;
 @property (nonatomic, retain) NSDate *startDate;
 @property (nonatomic, retain) NSDate *endDate;

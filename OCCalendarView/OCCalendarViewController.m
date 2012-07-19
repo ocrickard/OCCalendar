@@ -14,7 +14,8 @@
 @end
 
 @implementation OCCalendarViewController
-@synthesize delegate, startDate, endDate;
+
+@synthesize delegate, startDate, endDate, autoSelectDate;
 
 - (id)initAtPoint:(CGPoint)point inView:(UIView *)v arrowPosition:(OCArrowPosition)ap arrowVerticalPosition:(OCArrowVerticalPosition)avp selectionMode:(OCSelectionMode)selMode
 {
@@ -69,6 +70,8 @@
     }
     
     calView = [[OCCalendarView alloc] initAtPoint:insertPoint withFrame:CGRectMake(insertPoint.x - arrowPosX, insertPoint.y - arrowPosY, width, height) arrowPosition:arrowPos arrowVerticalPosition:arrowVerticalPos selectionMode:selectionMode];
+    calView.delegate = self;
+    
     if(self.startDate) {
         [calView setStartDate:startDate];
     }
@@ -89,6 +92,10 @@
     }
     startDate = [sDate retain];
     [calView setStartDate:startDate];
+    if (selectionMode == OCSelectionSingleDate)
+    {
+        [self setEndDate:startDate];
+    }
 }
 
 - (void)setEndDate:(NSDate *)eDate {
@@ -106,25 +113,33 @@
     
     //NSLog(@"startDate:%@ endDate:%@", startDate.description, endDate.description);
     
-    [calView removeFromSuperview];
-    calView = nil;
+    if (calView != nil)
+    {
+        [calView removeFromSuperview];
+        calView = nil;
+        
+        if([startDate compare:endDate] == NSOrderedAscending)
+            [self.delegate completedWithStartDate:startDate endDate:endDate];
+        else
+            [self.delegate completedWithStartDate:endDate endDate:startDate];
+    }
+}
+
+- (void) removeCalViewWithAnimation
+{
+    [UIView beginAnimations:@"animateOutCalendar" context:nil];
+    [UIView setAnimationDuration:0.4f];
+    calView.transform = CGAffineTransformMakeScale(0.1, 0.1);
+    calView.alpha = 0.0f;
+    [UIView commitAnimations];
     
-    if([startDate compare:endDate] == NSOrderedAscending)
-        [self.delegate completedWithStartDate:startDate endDate:endDate];
-    else
-        [self.delegate completedWithStartDate:endDate endDate:startDate];
+    [self performSelector:@selector(removeCalView) withObject:nil afterDelay:0.4f];
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     if(calView) {
         //Animate out the calendar view if it already exists
-        [UIView beginAnimations:@"animateOutCalendar" context:nil];
-        [UIView setAnimationDuration:0.4f];
-        calView.transform = CGAffineTransformMakeScale(0.1, 0.1);
-        calView.alpha = 0.0f;
-        [UIView commitAnimations];
-        
-        [self performSelector:@selector(removeCalView) withObject:nil afterDelay:0.4f];
+        [self removeCalViewWithAnimation];
     } else {
         //Recreate the calendar if it doesn't exist.
         
@@ -140,6 +155,8 @@
         }
         
         calView = [[OCCalendarView alloc] initAtPoint:point withFrame:CGRectMake(point.x - width*0.5, point.y - arrowPosY, width, height) arrowPosition:arrowPos arrowVerticalPosition:arrowVerticalPos selectionMode:selectionMode];
+        calView.delegate = self;
+        
         [self.view addSubview:[calView autorelease]];
     }
     
@@ -152,6 +169,14 @@
     [self.view removeFromSuperview];
 }
 
+
+- (void) endDateSelected
+{
+    if (self.autoSelectDate)
+    {
+        [self performSelector:@selector(removeCalViewWithAnimation) withObject:nil afterDelay:0.1];
+    }
+}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {

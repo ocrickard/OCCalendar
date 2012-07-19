@@ -10,7 +10,7 @@
 
 @implementation OCSelectionView
 
-@synthesize selectionMode;
+@synthesize selectionMode, delegate;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -118,15 +118,19 @@
     endCellY = startCellY;
     
     [self setNeedsDisplay];
+    
+    if(selectionMode == OCSelectionSingleDate)
+    {
+        if (self.delegate != nil && [self.delegate respondsToSelector:@selector(endDateSelected)])
+        {
+            [self.delegate performSelector:@selector(endDateSelected)];
+        }
+    }
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    if(selectionMode == OCSelectionSingleDate)
-    {
-        [self doSingleTouch:touches];
-        return;
-    }
+    [self doSingleTouch:touches];
 }
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -166,6 +170,11 @@
         endCellY = (int)(point.y)/vDiff;
         
         [self setNeedsDisplay];
+    }
+    
+    if (self.delegate != nil && [self.delegate respondsToSelector:@selector(endDateSelected)])
+    {
+        [self.delegate performSelector:@selector(endDateSelected)];
     }
 }
 

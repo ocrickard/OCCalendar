@@ -13,6 +13,8 @@
 
 @implementation OCCalendarView
 
+@synthesize delegate;
+
 - (id)initAtPoint:(CGPoint)p withFrame:(CGRect)frame {
   return [self initAtPoint:p withFrame:frame arrowPosition:OCArrowPositionCentered arrowVerticalPosition:OCArrowVerticalPositionTop selectionMode:OCSelectionDateRange];
 }
@@ -28,53 +30,63 @@
 
 - (id)initAtPoint:(CGPoint)p withFrame:(CGRect)frame arrowPosition:(OCArrowPosition)arrowPos arrowVerticalPosition:(OCArrowVerticalPosition)arrowVerticalPos selectionMode:(OCSelectionMode)selMode
 {
-  //NSLog(@"Arrow Position: %u", arrowPos);
-  
-  //    CGRect frame = CGRectMake(p.x - 390*0.5, p.y - 31.4, 390, 270);
-  self = [super initWithFrame:frame];
-  if(self) {
-    self.backgroundColor = [UIColor clearColor];
+    //NSLog(@"Arrow Position: %u", arrowPos);
     
-    calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    //    CGRect frame = CGRectMake(p.x - 390*0.5, p.y - 31.4, 390, 270);
+    self = [super initWithFrame:frame];
+    if(self)
+    {
+        self.backgroundColor = [UIColor clearColor];
+        
+        calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 		
-    NSUInteger unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
-    NSDateComponents *dateParts = [calendar components:unitFlags fromDate:[NSDate date]];
-    currentMonth = [dateParts month];
-    currentYear = [dateParts year];
+        NSUInteger unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
+        NSDateComponents *dateParts = [calendar components:unitFlags fromDate:[NSDate date]];
+        currentMonth = [dateParts month];
+        currentYear = [dateParts year];
+        
+        arrowPosition = arrowPos;
+        arrowVerticalPosition = arrowVerticalPos;
+        
+        
+        selected = NO;
+        startCellX = -1;
+        startCellY = -1;
+        endCellX = -1;
+        endCellY = -1;
+        
+        hDiff = 43;
+        vDiff = 30;
+        
+        selectionView = [[OCSelectionView alloc] initWithFrame:CGRectMake(66, 95, hDiff*7, vDiff*6)];
+        selectionView.selectionMode = selMode;
+        [self addSubview:selectionView];
+        
+        daysView = [[OCDaysView alloc] initWithFrame:CGRectMake(65, 98, hDiff*7, vDiff*6)];
+        [daysView setYear:currentYear];
+        [daysView setMonth:currentMonth];
+        [daysView resetRows];
+        [self addSubview:daysView];
+        
+        selectionView.frame = CGRectMake(66, 95, hDiff * 7, ([daysView addExtraRow] ? 6 : 5)*vDiff);
+        
+        //Make the view really small and invisible
+        CGAffineTransform tranny = CGAffineTransformMakeScale(0.1, 0.1);
+        self.transform = tranny;
+        self.alpha = 0.0f;
+        
+        [self performSelector:@selector(animateIn)];
+    }
+    return self;
+}
+
+- (void)setDelegate:(id)pDelegate
+{
+    NSString* oldDelegate = delegate;
+    delegate = [pDelegate retain];
+    [oldDelegate release];
     
-    arrowPosition = arrowPos;
-    arrowVerticalPosition = arrowVerticalPos;
-      
-    
-    selected = NO;
-    startCellX = -1;
-    startCellY = -1;
-    endCellX = -1;
-    endCellY = -1;
-    
-    hDiff = 43;
-    vDiff = 30;
-    
-    selectionView = [[OCSelectionView alloc] initWithFrame:CGRectMake(66, 95, hDiff*7, vDiff*6)];
-    selectionView.selectionMode = selectionMode;
-    [self addSubview:selectionView];
-    
-    daysView = [[OCDaysView alloc] initWithFrame:CGRectMake(65, 98, hDiff*7, vDiff*6)];
-    [daysView setYear:currentYear];
-    [daysView setMonth:currentMonth];
-    [daysView resetRows];
-    [self addSubview:daysView];
-    
-    selectionView.frame = CGRectMake(66, 95, hDiff * 7, ([daysView addExtraRow] ? 6 : 5)*vDiff);
-    
-    //Make the view really small and invisible
-    CGAffineTransform tranny = CGAffineTransformMakeScale(0.1, 0.1);
-    self.transform = tranny;
-    self.alpha = 0.0f;
-      
-    [self performSelector:@selector(animateIn)];
-  }
-  return self;
+    selectionView.delegate = pDelegate;
 }
 
 - (void)setFrame:(CGRect)frame {

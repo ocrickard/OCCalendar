@@ -51,6 +51,8 @@ typedef enum {
     int selectionMode;
 }
 
+@property (nonatomic, retain) id delegate;
+
 - (id)initAtPoint:(CGPoint)p withFrame:(CGRect)frame;
 - (id)initAtPoint:(CGPoint)p withFrame:(CGRect)frame arrowPosition:(OCArrowPosition)arrowPos;
 - (id)initAtPoint:(CGPoint)p withFrame:(CGRect)frame arrowPosition:(OCArrowPosition)arrowPos arrowVerticalPosition:(OCArrowVerticalPosition)arrowVerticalPos;
