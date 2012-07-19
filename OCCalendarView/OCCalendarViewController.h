@@ -18,18 +18,21 @@
 @end
 
 @interface OCCalendarViewController : UIViewController <UIGestureRecognizerDelegate> {
-  id <OCCalendarDelegate> delegate;
-  
-  UILabel *toolTipLabel;
-  OCCalendarView *calView;
-  
-  CGPoint insertPoint;
-  OCArrowPosition arrowPos;
-  
-  UIView *parentView;
+    id <OCCalendarDelegate> delegate;
     
-  NSDate *startDate;
-  NSDate *endDate;
+    UILabel *toolTipLabel;
+    OCCalendarView *calView;
+    
+    CGPoint insertPoint;
+    OCArrowPosition arrowPos;
+    OCArrowVerticalPosition arrowVerticalPos;
+    OCSelectionMode selectionMode;
+    
+    UIView *parentView;
+    UIView *bgView;    
+    UITapGestureRecognizer *tapG;
+    NSDate *startDate;
+    NSDate *endDate;
 }
 
 @property (nonatomic, assign) id <OCCalendarDelegate> delegate;
@@ -37,7 +40,9 @@
 @property (nonatomic, retain) NSDate *endDate;
 
 - (id)initAtPoint:(CGPoint)point inView:(UIView *)v;
-- (id)initAtPoint:(CGPoint)point inView:(UIView *)v arrowPosition:(OCArrowPosition)ap;
+- (id)initAtPoint:(CGPoint)point inView:(UIView *)v arrowPosition:(OCArrowPosition)ap arrowVerticalPosition:(OCArrowVerticalPosition)avp;
+- (id)initAtPoint:(CGPoint)point inView:(UIView *)v arrowPosition:(OCArrowPosition)ap arrowVerticalPosition:(OCArrowVerticalPosition)avp selectionMode:(OCSelectionMode)selMode;
 
+- (void) remove;
 
 @end

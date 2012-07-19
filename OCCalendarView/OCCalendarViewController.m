@@ -16,18 +16,24 @@
 @implementation OCCalendarViewController
 @synthesize delegate, startDate, endDate;
 
-- (id)initAtPoint:(CGPoint)point inView:(UIView *)v arrowPosition:(OCArrowPosition)ap {
+- (id)initAtPoint:(CGPoint)point inView:(UIView *)v arrowPosition:(OCArrowPosition)ap arrowVerticalPosition:(OCArrowVerticalPosition)avp selectionMode:(OCSelectionMode)selMode
+{
   self = [super initWithNibName:nil bundle:nil];
   if(self) {
-    insertPoint = point;
-    parentView = v;
-    arrowPos = ap;
+      insertPoint = point;
+      parentView = v;
+      arrowPos = ap;
+      arrowVerticalPos = avp;
+      selectionMode = selMode;
   }
   return self;
 }
+- (id)initAtPoint:(CGPoint)point inView:(UIView *)v arrowPosition:(OCArrowPosition)ap arrowVerticalPosition:(OCArrowVerticalPosition)avp {
+    return [self initAtPoint:point inView:v arrowPosition:OCArrowPositionCentered arrowVerticalPosition:OCArrowVerticalPositionTop selectionMode:OCSelectionDateRange];
+}
 
 - (id)initAtPoint:(CGPoint)point inView:(UIView *)v {
-  return [self initAtPoint:point inView:v arrowPosition:OCArrowPositionCentered];
+  return [self initAtPoint:point inView:v arrowPosition:OCArrowPositionCentered arrowVerticalPosition:OCArrowVerticalPositionTop selectionMode:OCSelectionDateRange];
 }
 
 - (void)loadView {
@@ -36,9 +42,9 @@
     
     
     //this view sits behind the calendar and receives touches.  It tells the calendar view to disappear when tapped.
-    UIView *bgView = [[UIView alloc] initWithFrame:self.view.frame];
+    bgView = [[UIView alloc] initWithFrame:self.view.frame];
     bgView.backgroundColor = [UIColor clearColor];
-    UITapGestureRecognizer *tapG = [[UITapGestureRecognizer alloc] init];
+    tapG = [[UITapGestureRecognizer alloc] init];
     tapG.delegate = self;
     [bgView addGestureRecognizer:[tapG autorelease]];
     [bgView setUserInteractionEnabled:YES];
@@ -49,6 +55,7 @@
     int height = 300;
     
     float arrowPosX = 208;
+    float arrowPosY = 31.4;
     
     if(arrowPos == OCArrowPositionLeft) {
         arrowPosX = 67;
@@ -56,7 +63,12 @@
         arrowPosX = 346;
     }
     
-    calView = [[OCCalendarView alloc] initAtPoint:insertPoint withFrame:CGRectMake(insertPoint.x - arrowPosX, insertPoint.y - 31.4, width, height) arrowPosition:arrowPos];
+    if (arrowVerticalPos == OCArrowVerticalPositionBottom)
+    {
+        arrowPosY = 268.9;
+    }
+    
+    calView = [[OCCalendarView alloc] initAtPoint:insertPoint withFrame:CGRectMake(insertPoint.x - arrowPosX, insertPoint.y - arrowPosY, width, height) arrowPosition:arrowPos arrowVerticalPosition:arrowVerticalPos selectionMode:selectionMode];
     if(self.startDate) {
         [calView setStartDate:startDate];
     }
@@ -121,12 +133,25 @@
         int width = 390;
         int height = 300;
         
-        calView = [[OCCalendarView alloc] initAtPoint:point withFrame:CGRectMake(point.x - width*0.5, point.y - 31.4, width, height)];
+        float arrowPosY = 31.4;
+        if (arrowVerticalPos == OCArrowVerticalPositionBottom)
+        {
+            arrowPosY = 268.9;
+        }
+        
+        calView = [[OCCalendarView alloc] initAtPoint:point withFrame:CGRectMake(point.x - width*0.5, point.y - arrowPosY, width, height) arrowPosition:arrowPos arrowVerticalPosition:arrowVerticalPos selectionMode:selectionMode];
         [self.view addSubview:[calView autorelease]];
     }
     
     return YES;
 }
+
+- (void) remove
+{
+    [bgView removeGestureRecognizer:tapG];
+    [self.view removeFromSuperview];
+}
+
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {

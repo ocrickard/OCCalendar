@@ -14,10 +14,20 @@
 @implementation OCCalendarView
 
 - (id)initAtPoint:(CGPoint)p withFrame:(CGRect)frame {
-  return [self initAtPoint:p withFrame:frame arrowPosition:OCArrowPositionCentered];
+  return [self initAtPoint:p withFrame:frame arrowPosition:OCArrowPositionCentered arrowVerticalPosition:OCArrowVerticalPositionTop selectionMode:OCSelectionDateRange];
 }
 
 - (id)initAtPoint:(CGPoint)p withFrame:(CGRect)frame arrowPosition:(OCArrowPosition)arrowPos {
+    return [self initAtPoint:p withFrame:frame arrowPosition:arrowPos arrowVerticalPosition:OCArrowVerticalPositionTop selectionMode:OCSelectionDateRange];
+}
+
+- (id)initAtPoint:(CGPoint)p withFrame:(CGRect)frame arrowPosition:(OCArrowPosition)arrowPos arrowVerticalPosition:(OCArrowVerticalPosition)arrowVerticalPos
+{
+    return [self initAtPoint:p withFrame:frame arrowPosition:OCArrowPositionCentered arrowVerticalPosition:arrowVerticalPos selectionMode:OCSelectionDateRange];
+}
+
+- (id)initAtPoint:(CGPoint)p withFrame:(CGRect)frame arrowPosition:(OCArrowPosition)arrowPos arrowVerticalPosition:(OCArrowVerticalPosition)arrowVerticalPos selectionMode:(OCSelectionMode)selMode
+{
   //NSLog(@"Arrow Position: %u", arrowPos);
   
   //    CGRect frame = CGRectMake(p.x - 390*0.5, p.y - 31.4, 390, 270);
@@ -33,6 +43,8 @@
     currentYear = [dateParts year];
     
     arrowPosition = arrowPos;
+    arrowVerticalPosition = arrowVerticalPos;
+      
     
     selected = NO;
     startCellX = -1;
@@ -44,6 +56,7 @@
     vDiff = 30;
     
     selectionView = [[OCSelectionView alloc] initWithFrame:CGRectMake(66, 95, hDiff*7, vDiff*6)];
+    selectionView.selectionMode = selectionMode;
     [self addSubview:selectionView];
     
     daysView = [[OCDaysView alloc] initWithFrame:CGRectMake(65, 98, hDiff*7, vDiff*6)];
@@ -133,6 +146,12 @@
 - (void)setArrowPosition:(OCArrowPosition)pos {
     arrowPosition = pos;
 }
+
+- (void)setArrowVerticalPosition:(OCArrowVerticalPosition)pos
+{
+    arrowVerticalPosition = pos;
+}
+
 
 - (NSDate *)getStartDate {
     CGPoint startPoint = [selectionView startPoint];
@@ -353,6 +372,10 @@
     [daysView setYear:currentYear];
     [daysView resetRows];
     [daysView setNeedsDisplay];
+    if (selectionMode == OCSelectionSingleDate)
+    {
+        [self setStartDate:[self getEndDate]];
+    }
 }
 
 - (void)drawRect:(CGRect)rect
@@ -411,26 +434,52 @@
         //NSLog(@"Added extra row");
         [roundedRectanglePath moveToPoint: CGPointMake(42, 267.42)];
         [roundedRectanglePath addCurveToPoint: CGPointMake(52, 278.4) controlPoint1: CGPointMake(42, 273.49) controlPoint2: CGPointMake(46.48, 278.4)];
+        
+        if (arrowVerticalPosition == OCArrowVerticalPositionBottom)
+        {
+            [roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX+13.5, 278.4)];
+            [roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX, 290.9)];
+            [roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX-13.5, 278.4)];
+        }
+
         [roundedRectanglePath addLineToPoint: CGPointMake(361.5, 278.4)];
         [roundedRectanglePath addCurveToPoint: CGPointMake(371.5, 267.42) controlPoint1: CGPointMake(367.02, 278.4) controlPoint2: CGPointMake(371.5, 273.49)];
         [roundedRectanglePath addLineToPoint: CGPointMake(371.5, 53.9)];
         [roundedRectanglePath addCurveToPoint: CGPointMake(361.5, 43.9) controlPoint1: CGPointMake(371.5, 48.38) controlPoint2: CGPointMake(367.02, 43.9)];
-        [roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX+13.5, 43.9)];
-        [roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX, 31.4)];
-        [roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX-13.5, 43.9)];
+        
+        if (arrowVerticalPosition == OCArrowVerticalPositionTop)
+        {
+            [roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX+13.5, 43.9)];
+            [roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX, 31.4)];
+            [roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX-13.5, 43.9)];
+        }
+        
         [roundedRectanglePath addLineToPoint: CGPointMake(52, 43.9)];
         [roundedRectanglePath addCurveToPoint: CGPointMake(42, 53.9) controlPoint1: CGPointMake(46.48, 43.9) controlPoint2: CGPointMake(42, 48.38)];
         [roundedRectanglePath addLineToPoint: CGPointMake(42, 267.42)];
     } else {
         [roundedRectanglePath moveToPoint: CGPointMake(42, 246.4)];
         [roundedRectanglePath addCurveToPoint: CGPointMake(52, 256.4) controlPoint1: CGPointMake(42, 251.92) controlPoint2: CGPointMake(46.48, 256.4)];
+        
+        if (arrowVerticalPosition == OCArrowVerticalPositionBottom)
+        {
+            [roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX+13.5, 256.4)];
+            [roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX, 268.9)];
+            [roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX-13.5, 256.4)];
+        }
+        
         [roundedRectanglePath addLineToPoint: CGPointMake(361.5, 256.4)];
         [roundedRectanglePath addCurveToPoint: CGPointMake(371.5, 246.4) controlPoint1: CGPointMake(367.02, 256.4) controlPoint2: CGPointMake(371.5, 251.92)];
         [roundedRectanglePath addLineToPoint: CGPointMake(371.5, 53.9)];
         [roundedRectanglePath addCurveToPoint: CGPointMake(361.5, 43.9) controlPoint1: CGPointMake(371.5, 48.38) controlPoint2: CGPointMake(367.02, 43.9)];
-        [roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX+13.5, 43.9)];
-        [roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX, 31.4)];
-        [roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX-13.5, 43.9)];
+        
+        if (arrowVerticalPosition == OCArrowVerticalPositionTop)
+        {
+            [roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX+13.5, 43.9)];
+            [roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX, 31.4)];
+            [roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX-13.5, 43.9)];
+        }
+        
         [roundedRectanglePath addLineToPoint: CGPointMake(52, 43.9)];
         [roundedRectanglePath addCurveToPoint: CGPointMake(42, 53.9) controlPoint1: CGPointMake(46.48, 43.9) controlPoint2: CGPointMake(42, 48.38)];
         [roundedRectanglePath addLineToPoint: CGPointMake(42, 246.4)];
@@ -494,26 +543,52 @@
     if([daysView addExtraRow]) {
         [roundedRectangle2Path moveToPoint: CGPointMake(42, 267.42)];
         [roundedRectangle2Path addCurveToPoint: CGPointMake(52, 278.4) controlPoint1: CGPointMake(42, 273.49) controlPoint2: CGPointMake(46.48, 278.4)];
+        
+        if (arrowVerticalPosition == OCArrowVerticalPositionBottom)
+        {
+            [roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX+13.5, 278.4)];
+            [roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX, 290.9)];
+            [roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX-13.5, 278.4)];
+        }
+        
         [roundedRectangle2Path addLineToPoint: CGPointMake(361.5, 278.4)];
         [roundedRectangle2Path addCurveToPoint: CGPointMake(371.5, 267.42) controlPoint1: CGPointMake(367.02, 278.4) controlPoint2: CGPointMake(371.5, 273.49)];
         [roundedRectangle2Path addLineToPoint: CGPointMake(371.5, 53.9)];
         [roundedRectangle2Path addCurveToPoint: CGPointMake(361.5, 43.9) controlPoint1: CGPointMake(371.5, 48.38) controlPoint2: CGPointMake(367.02, 43.9)];
-        [roundedRectangle2Path addLineToPoint: CGPointMake(arrowPosX+13.5, 43.9)];
-        [roundedRectangle2Path addLineToPoint: CGPointMake(arrowPosX, 31.4)];
-        [roundedRectangle2Path addLineToPoint: CGPointMake(arrowPosX-13.5, 43.9)];
+        
+        if (arrowVerticalPosition == OCArrowVerticalPositionTop)
+        {
+            [roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX+13.5, 43.9)];
+            [roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX, 31.4)];
+            [roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX-13.5, 43.9)];
+        }
+        
         [roundedRectangle2Path addLineToPoint: CGPointMake(52, 43.9)];
         [roundedRectangle2Path addCurveToPoint: CGPointMake(42, 53.9) controlPoint1: CGPointMake(46.48, 43.9) controlPoint2: CGPointMake(42, 48.38)];
         [roundedRectangle2Path addLineToPoint: CGPointMake(42, 267.42)];
     } else {
         [roundedRectangle2Path moveToPoint: CGPointMake(42, 246.4)];
         [roundedRectangle2Path addCurveToPoint: CGPointMake(52, 256.4) controlPoint1: CGPointMake(42, 251.92) controlPoint2: CGPointMake(46.48, 256.4)];
+        
+        if (arrowVerticalPosition == OCArrowVerticalPositionBottom)
+        {
+            [roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX+13.5, 256.4)];
+            [roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX, 268.9)];
+            [roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX-13.5, 256.4)];
+        }
+        
         [roundedRectangle2Path addLineToPoint: CGPointMake(361.5, 256.4)];
         [roundedRectangle2Path addCurveToPoint: CGPointMake(371.5, 246.4) controlPoint1: CGPointMake(367.02, 256.4) controlPoint2: CGPointMake(371.5, 251.92)];
         [roundedRectangle2Path addLineToPoint: CGPointMake(371.5, 53.9)];
         [roundedRectangle2Path addCurveToPoint: CGPointMake(361.5, 43.9) controlPoint1: CGPointMake(371.5, 48.38) controlPoint2: CGPointMake(367.02, 43.9)];
-        [roundedRectangle2Path addLineToPoint: CGPointMake(arrowPosX+13.5, 43.9)];
-        [roundedRectangle2Path addLineToPoint: CGPointMake(arrowPosX, 31.4)];
-        [roundedRectangle2Path addLineToPoint: CGPointMake(arrowPosX-13.5, 43.9)];
+        
+        if (arrowVerticalPosition == OCArrowVerticalPositionTop)
+        {
+            [roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX+13.5, 43.9)];
+            [roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX, 31.4)];
+            [roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX-13.5, 43.9)];
+        }
+        
         [roundedRectangle2Path addLineToPoint: CGPointMake(52, 43.9)];
         [roundedRectangle2Path addCurveToPoint: CGPointMake(42, 53.9) controlPoint1: CGPointMake(46.48, 43.9) controlPoint2: CGPointMake(42, 48.38)];
         [roundedRectangle2Path addLineToPoint: CGPointMake(42, 246.4)];

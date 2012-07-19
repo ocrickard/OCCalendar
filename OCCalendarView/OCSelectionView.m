@@ -10,6 +10,8 @@
 
 @implementation OCSelectionView
 
+@synthesize selectionMode;
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -82,7 +84,7 @@
             }
             
             //// selectedRect Drawing
-            UIBezierPath* selectedRectPath = [UIBezierPath bezierPathWithRoundedRect: CGRectMake(MIN(thisRowStartCell, thisRowEndCell)*hDiff, i*vDiff, (ABS(thisRowEndCell-thisRowStartCell))*hDiff+20, 21) cornerRadius: 10];
+            UIBezierPath* selectedRectPath = [UIBezierPath bezierPathWithRoundedRect: CGRectMake(MIN(thisRowStartCell, thisRowEndCell)*hDiff, i*vDiff, (ABS(thisRowEndCell-thisRowStartCell))*hDiff+20, 21) cornerRadius: 10.0];
             CGContextSaveGState(context);
             [selectedRectPath addClip];
             CGContextDrawLinearGradient(context, gradient3, CGPointMake((MIN(thisRowStartCell, thisRowEndCell)+.5)*hDiff, (i+1)*vDiff), CGPointMake((MIN(thisRowStartCell, thisRowEndCell)+.5)*hDiff, i*vDiff), 0);
@@ -101,7 +103,8 @@
     }
 }
 
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+- (void) doSingleTouch:(NSSet *)touches
+{
     selected = YES;
     
     UITouch *touch = [touches anyObject];
@@ -117,7 +120,23 @@
     [self setNeedsDisplay];
 }
 
--(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    if(selectionMode == OCSelectionSingleDate)
+    {
+        [self doSingleTouch:touches];
+        return;
+    }
+}
+
+-(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    if(selectionMode == OCSelectionSingleDate)
+    {
+        [self doSingleTouch:touches];
+        return;
+    }
+    
     UITouch *touch = [touches anyObject];
     
     CGPoint point = [touch locationInView:self];
@@ -130,7 +149,14 @@
     }
 }
 
--(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+-(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    if(selectionMode == OCSelectionSingleDate)
+    {
+        [self doSingleTouch:touches];
+        return;
+    }
+    
     UITouch *touch = [touches anyObject];
     
     CGPoint point = [touch locationInView:self];
