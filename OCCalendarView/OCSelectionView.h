@@ -22,6 +22,9 @@
     float vDiff;
 }
 
+@property (nonatomic, retain) id delegate;
+@property (nonatomic, assign) int selectionMode;
+
 - (void)resetSelection;
 
 -(CGPoint)startPoint;
