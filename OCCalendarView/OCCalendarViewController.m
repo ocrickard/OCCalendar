@@ -165,6 +165,8 @@
 
 - (void) remove
 {
+    self.delegate = nil;
+    calView.delegate = nil;
     [bgView removeGestureRecognizer:tapG];
     [self.view removeFromSuperview];
 }
