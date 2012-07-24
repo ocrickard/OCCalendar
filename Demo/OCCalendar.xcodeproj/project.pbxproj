@@ -45,6 +45,7 @@
 		B1558BEF152648CB00326469 /* OCViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OCViewController.m; sourceTree = "<group>"; };
 		B1558BF2152648CB00326469 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/OCViewController.xib; sourceTree = "<group>"; };
 		B1D629951526926D005F7283 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		F311322B15651DEB0009A1B3 /* OCTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OCTypes.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +74,7 @@
 				7B08B0DE152E203E00EACAC5 /* OCDaysView.m */,
 				7B08B0DF152E203E00EACAC5 /* OCSelectionView.h */,
 				7B08B0E0152E203E00EACAC5 /* OCSelectionView.m */,
+				F311322B15651DEB0009A1B3 /* OCTypes.h */,
 			);
 			name = OCCalendarView;
 			path = ../../OCCalendarView;

@@ -7,12 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "OCTypes.h"
 typedef enum {
   OCArrowPositionLeft = -1,
   OCArrowPositionCentered = 0,
   OCArrowPositionRight = 1
 } OCArrowPosition;
+
 
 @class OCSelectionView;
 @class OCDaysView;
@@ -50,4 +51,5 @@ typedef enum {
 - (void)setStartDate:(NSDate *)sDate;
 - (void)setEndDate:(NSDate *)eDate;
 
+@property OCSelectionMode selectionMode;
 @end
