@@ -149,7 +149,7 @@
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     CGPoint insertPoint = [touch locationInView:self.view];
     
-    calVC = [[OCCalendarViewController alloc] initAtPoint:insertPoint inView:self.view arrowPosition:OCArrowPositionRight];
+    calVC = [[OCCalendarViewController alloc] initAtPoint:insertPoint inView:self.view arrowPosition:OCArrowPositionRight selectionMode:OCSelectionSingleDate];
     calVC.delegate = self;
     [self.view addSubview:calVC.view];
     

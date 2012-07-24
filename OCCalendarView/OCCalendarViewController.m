@@ -14,20 +14,25 @@
 @end
 
 @implementation OCCalendarViewController
-@synthesize delegate, startDate, endDate;
+@synthesize delegate, startDate, endDate, selectionMode;
+
+- (id)initAtPoint:(CGPoint)point inView:(UIView *)v arrowPosition:(OCArrowPosition)ap selectionMode:(OCSelectionMode)sm {
+    self = [super initWithNibName:nil bundle:nil];
+    if(self) {
+        insertPoint = point;
+        parentView = v;
+        arrowPos = ap;
+        selectionMode = sm;
+    }
+    return self;
+}
 
 - (id)initAtPoint:(CGPoint)point inView:(UIView *)v arrowPosition:(OCArrowPosition)ap {
-  self = [super initWithNibName:nil bundle:nil];
-  if(self) {
-    insertPoint = point;
-    parentView = v;
-    arrowPos = ap;
-  }
-  return self;
+    return [self initAtPoint:point inView:v arrowPosition:ap selectionMode:OCSelectionDateRange];
 }
 
 - (id)initAtPoint:(CGPoint)point inView:(UIView *)v {
-  return [self initAtPoint:point inView:v arrowPosition:OCArrowPositionCentered];
+    return [self initAtPoint:point inView:v arrowPosition:OCArrowPositionCentered];
 }
 
 - (void)loadView {
@@ -57,6 +62,7 @@
     }
     
     calView = [[OCCalendarView alloc] initAtPoint:insertPoint withFrame:CGRectMake(insertPoint.x - arrowPosX, insertPoint.y - 31.4, width, height) arrowPosition:arrowPos];
+    [calView setSelectionMode:selectionMode];
     if(self.startDate) {
         [calView setStartDate:startDate];
     }
