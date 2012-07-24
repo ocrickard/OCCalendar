@@ -63,6 +63,9 @@ typedef enum {
 //Valid Positions: OCArrowVerticalPositionTop, OCArrowVerticalPositionBottom
 - (void)setArrowVerticalPosition:(OCArrowVerticalPosition)pos;
 
+- (void) setSelectionColor:(UIColor *)selColor;
+- (void) setTodayMarkerColor:(UIColor *)todayColor;
+
 - (NSDate *)getStartDate;
 - (NSDate *)getEndDate;
 

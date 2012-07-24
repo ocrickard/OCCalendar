@@ -24,7 +24,11 @@
     int currentYear;
     
     BOOL didAddExtraRow;
+    
+    UIColor *todayMarkerColor;
 }
+
+@property (nonatomic, retain) UIColor *todayMarkerColor;
 
 - (void)setMonth:(int)month;
 - (void)setYear:(int)year;

@@ -33,16 +33,25 @@
     UITapGestureRecognizer *tapG;
     NSDate *startDate;
     NSDate *endDate;
+    
+    UIColor *selectionColor;
+    UIColor *todayMarkerColor;
 }
 
+@property (nonatomic, retain) UIColor *selectionColor;
+@property (nonatomic, retain) UIColor *todayMarkerColor;
 @property (nonatomic, assign) BOOL autoSelectDate;
 @property (nonatomic, assign) id <OCCalendarDelegate> delegate;
 @property (nonatomic, retain) NSDate *startDate;
 @property (nonatomic, retain) NSDate *endDate;
 
 - (id)initAtPoint:(CGPoint)point inView:(UIView *)v;
+- (id)initAtPoint:(CGPoint)point inView:(UIView *)v arrowPosition:(OCArrowPosition)ap;
 - (id)initAtPoint:(CGPoint)point inView:(UIView *)v arrowPosition:(OCArrowPosition)ap arrowVerticalPosition:(OCArrowVerticalPosition)avp;
 - (id)initAtPoint:(CGPoint)point inView:(UIView *)v arrowPosition:(OCArrowPosition)ap arrowVerticalPosition:(OCArrowVerticalPosition)avp selectionMode:(OCSelectionMode)selMode;
+
+- (void) setSelectionColor:(UIColor *)selColor;
+- (void) setTodayMarkerColor:(UIColor *)todayColor;
 
 - (void) remove;
 

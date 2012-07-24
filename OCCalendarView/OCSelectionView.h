@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "OCCalendarView.h"
 
 @interface OCSelectionView : UIView {
     BOOL selected;
@@ -20,8 +21,11 @@
     
     float hDiff;
     float vDiff;
+    
+    UIColor *selectionColor;
 }
 
+@property (nonatomic, retain) UIColor *selectionColor;
 @property (nonatomic, retain) id delegate;
 @property (nonatomic, assign) int selectionMode;
 

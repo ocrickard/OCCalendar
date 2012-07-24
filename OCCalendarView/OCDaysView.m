@@ -10,6 +10,8 @@
 
 @implementation OCDaysView
 
+@synthesize todayMarkerColor;
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -24,6 +26,7 @@
         hDiff = 43;
         vDiff = 30;
         
+        self.todayMarkerColor = [UIColor colorWithRed: 0.98 green: 0.24 blue: 0.09 alpha: 1];
         self.backgroundColor = [UIColor clearColor];
     }
     return self;
@@ -115,7 +118,7 @@
                 CGContextSetShadowWithColor(context, shadow2Offset, shadow2BlurRadius, shadow2);
                 CGRect dayHeader2Frame = CGRectMake(j*hDiff, i*vDiff, 21, 14);
                 if([today day] == day && [today month] == month && [today year] == year) {
-                    [[UIColor colorWithRed: 0.98 green: 0.24 blue: 0.09 alpha: 1] setFill];
+                    [self.todayMarkerColor setFill];
                 } else {
                     [[UIColor whiteColor] setFill];
                 }

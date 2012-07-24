@@ -10,7 +10,7 @@
 
 @implementation OCSelectionView
 
-@synthesize selectionMode, delegate;
+@synthesize selectionMode, delegate, selectionColor;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -29,7 +29,6 @@
         vDiff = 30;
         
         self.userInteractionEnabled = YES;
-        
         self.backgroundColor = [UIColor clearColor];
     }
     return self;
@@ -50,8 +49,24 @@
         
         UIColor* darkColor = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 0.72];
         
-        UIColor* color = [UIColor colorWithRed: 0.82 green: 0.08 blue: 0 alpha: 0.86];
-        UIColor* color2 = [UIColor colorWithRed: 0.66 green: 0.02 blue: 0.04 alpha: 0.88];
+        UIColor* color = self.selectionColor;
+        CGFloat red = 0;
+        CGFloat green = 0;
+        CGFloat blue = 0;
+        
+        NSLog(@"%@", self.selectionColor);
+        
+        if (self.selectionColor != nil)
+        {
+            const CGFloat *components = CGColorGetComponents([self.selectionColor CGColor]);
+            red = components[0];
+            green = components[1];
+            blue = components[2];
+            //        CGFloat alpha = components[3];
+        }
+        
+//        NSLog(@"%f:%f:%f:%f", red, green, blue, alpha);
+        UIColor* color2 = [UIColor colorWithRed:red*0.7 green:green*0.7 blue:blue*0.7 alpha: 0.88];
         NSArray* gradient3Colors = [NSArray arrayWithObjects: 
                                     (id)color.CGColor, 
                                     (id)color2.CGColor, nil];

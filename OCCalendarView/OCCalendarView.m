@@ -164,6 +164,16 @@
     arrowVerticalPosition = pos;
 }
 
+- (void) setSelectionColor:(UIColor *)selColor
+{
+    selectionView.selectionColor = selColor;
+}
+
+- (void) setTodayMarkerColor:(UIColor *)todayColor
+{
+    daysView.todayMarkerColor = todayColor;
+}
+
 
 - (NSDate *)getStartDate {
     CGPoint startPoint = [selectionView startPoint];

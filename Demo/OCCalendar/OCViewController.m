@@ -74,6 +74,8 @@
     
     [calVC setStartDate:sDate];
     [calVC setEndDate:eDate];
+//    [calVC setSelectionColor:[UIColor orangeColor]];
+//    [calVC setTodayMarkerColor:[UIColor greenColor]];
     
     //Add to the view.
     [self.view addSubview:calVC.view];
@@ -151,6 +153,8 @@
     
     calVC = [[OCCalendarViewController alloc] initAtPoint:insertPoint inView:self.view arrowPosition:OCArrowPositionRight];
     calVC.delegate = self;
+//    [calVC setSelectionColor:[UIColor orangeColor]];
+//    [calVC setTodayMarkerColor:[UIColor greenColor]];
     [self.view addSubview:calVC.view];
     
     return YES;

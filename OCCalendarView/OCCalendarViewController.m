@@ -15,7 +15,7 @@
 
 @implementation OCCalendarViewController
 
-@synthesize delegate, startDate, endDate, autoSelectDate;
+@synthesize delegate, startDate, endDate, autoSelectDate, selectionColor, todayMarkerColor;
 
 - (id)initAtPoint:(CGPoint)point inView:(UIView *)v arrowPosition:(OCArrowPosition)ap arrowVerticalPosition:(OCArrowVerticalPosition)avp selectionMode:(OCSelectionMode)selMode
 {
@@ -26,15 +26,24 @@
       arrowPos = ap;
       arrowVerticalPos = avp;
       selectionMode = selMode;
+      self.selectionColor = [UIColor colorWithRed: 0.82 green: 0.08 blue: 0 alpha: 0.86];
+      self.todayMarkerColor = [UIColor colorWithRed: 0.98 green: 0.24 blue: 0.09 alpha: 1];
   }
   return self;
-}
-- (id)initAtPoint:(CGPoint)point inView:(UIView *)v arrowPosition:(OCArrowPosition)ap arrowVerticalPosition:(OCArrowVerticalPosition)avp {
-    return [self initAtPoint:point inView:v arrowPosition:OCArrowPositionCentered arrowVerticalPosition:OCArrowVerticalPositionTop selectionMode:OCSelectionDateRange];
 }
 
 - (id)initAtPoint:(CGPoint)point inView:(UIView *)v {
   return [self initAtPoint:point inView:v arrowPosition:OCArrowPositionCentered arrowVerticalPosition:OCArrowVerticalPositionTop selectionMode:OCSelectionDateRange];
+}
+
+
+- (id)initAtPoint:(CGPoint)point inView:(UIView *)v arrowPosition:(OCArrowPosition)ap
+{
+    return [self initAtPoint:point inView:v arrowPosition:ap arrowVerticalPosition:OCArrowVerticalPositionTop selectionMode:OCSelectionDateRange];
+}
+
+- (id)initAtPoint:(CGPoint)point inView:(UIView *)v arrowPosition:(OCArrowPosition)ap arrowVerticalPosition:(OCArrowVerticalPosition)avp {
+    return [self initAtPoint:point inView:v arrowPosition:ap arrowVerticalPosition:avp selectionMode:OCSelectionDateRange];
 }
 
 - (void)loadView {
@@ -71,6 +80,8 @@
     
     calView = [[OCCalendarView alloc] initAtPoint:insertPoint withFrame:CGRectMake(insertPoint.x - arrowPosX, insertPoint.y - arrowPosY, width, height) arrowPosition:arrowPos arrowVerticalPosition:arrowVerticalPos selectionMode:selectionMode];
     calView.delegate = self;
+    [calView setSelectionColor:selectionColor];
+    [calView setTodayMarkerColor:todayMarkerColor];
     
     if(self.startDate) {
         [calView setStartDate:startDate];
@@ -84,6 +95,27 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 }
+
+- (void)setSelectionColor:(UIColor *)selColor
+{
+    if(selectionColor) {
+        [selectionColor release];
+        selectionColor = nil;
+    }
+    selectionColor = [selColor retain];
+    [calView setSelectionColor:selectionColor];
+}
+
+- (void) setTodayMarkerColor:(UIColor *)todayColor
+{
+    if(todayMarkerColor) {
+        [todayMarkerColor release];
+        todayMarkerColor = nil;
+    }
+    todayMarkerColor = [todayColor retain];
+    [calView setTodayMarkerColor:todayMarkerColor];
+}
+
 
 - (void)setStartDate:(NSDate *)sDate {
     if(startDate) {
