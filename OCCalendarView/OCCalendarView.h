@@ -24,7 +24,6 @@ typedef enum {
     int currentMonth;
     int currentYear;
     
-    BOOL selected;
     int startCellX;
     int startCellY;
     int endCellX;
@@ -47,6 +46,8 @@ typedef enum {
 
 - (NSDate *)getStartDate;
 - (NSDate *)getEndDate;
+
+- (BOOL)selected;
 
 - (void)setStartDate:(NSDate *)sDate;
 - (void)setEndDate:(NSDate *)eDate;

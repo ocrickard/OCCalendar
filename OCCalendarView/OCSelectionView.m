@@ -10,6 +10,7 @@
 
 @implementation OCSelectionView
 @synthesize selectionMode = _selectionMode;
+@synthesize selected;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -32,6 +33,10 @@
         self.backgroundColor = [UIColor clearColor];
     }
     return self;
+}
+
+- (BOOL) selected {
+    return selected;
 }
 
 
@@ -74,7 +79,7 @@
             
             if(endCellY == i) {
                 thisRowEndCell = endCellX;
-//            } else {
+                
                 if (startCellY > endCellY) {
                     thisRowStartCell = endCellX; thisRowEndCell = 6;
                 }
@@ -108,7 +113,7 @@
 }
 
 -(void) singleSelection:(NSSet *)touches {
-    selected = YES;
+    self.selected = YES;
     
     UITouch *touch = [touches anyObject];
     

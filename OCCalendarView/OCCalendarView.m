@@ -46,8 +46,6 @@
     currentYear = [dateParts year];
     
     arrowPosition = arrowPos;
-    
-    selected = NO;
     startCellX = -1;
     startCellY = -1;
     endCellX = -1;
@@ -141,6 +139,11 @@
     [daysView setAlpha:1.0f];
     [selectionView setAlpha:1.0f];
     [UIView commitAnimations];
+}
+
+- (BOOL)selected {
+    //NSLog(@"Selected:%d", [selectionView selected]);
+    return [selectionView selected];
 }
 
 - (void)setArrowPosition:(OCArrowPosition)pos {

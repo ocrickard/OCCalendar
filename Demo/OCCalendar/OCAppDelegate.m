@@ -29,6 +29,8 @@
     self.viewController = [[[OCViewController alloc] initWithNibName:@"OCViewController" bundle:nil] autorelease];
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
+    
+    NSLog(@"%s", __PRETTY_FUNCTION__);
     return YES;
 }
 

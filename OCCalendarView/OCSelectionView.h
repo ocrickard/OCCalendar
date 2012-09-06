@@ -30,5 +30,6 @@
 -(void)setStartPoint:(CGPoint)sPoint;
 -(void)setEndPoint:(CGPoint)ePoint;
 @property(nonatomic, assign) OCSelectionMode selectionMode;
+@property (nonatomic, assign) BOOL selected;
 
 @end

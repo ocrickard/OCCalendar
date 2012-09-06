@@ -87,6 +87,8 @@
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
     [df setDateStyle:NSDateFormatterShortStyle];
     
+    NSLog(@"startDate:%@, endDate:%@", startDate, endDate);
+    
     [self showToolTip:[NSString stringWithFormat:@"%@ - %@", [df stringFromDate:startDate], [df stringFromDate:endDate]]];
     
     [df release];

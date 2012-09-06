@@ -100,13 +100,19 @@
     
     //NSLog(@"startDate:%@ endDate:%@", startDate.description, endDate.description);
     
+    //NSLog(@"CalView Selected:%d", [calView selected]);
+    
+    if([calView selected]) {
+        if([startDate compare:endDate] == NSOrderedAscending)
+            [self.delegate completedWithStartDate:startDate endDate:endDate];
+        else
+            [self.delegate completedWithStartDate:endDate endDate:startDate];
+    } else {
+        //Do something else if it's not selected.
+    }
+    
     [calView removeFromSuperview];
     calView = nil;
-    
-    if([startDate compare:endDate] == NSOrderedAscending)
-        [self.delegate completedWithStartDate:startDate endDate:endDate];
-    else
-        [self.delegate completedWithStartDate:endDate endDate:startDate];
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
