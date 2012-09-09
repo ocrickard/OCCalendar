@@ -15,6 +15,8 @@
 
 -(void)completedWithStartDate:(NSDate *)startDate endDate:(NSDate *)endDate;
 
+-(void)completedWithNoSelection;
+
 @end
 
 @interface OCCalendarViewController : UIViewController <UIGestureRecognizerDelegate> {

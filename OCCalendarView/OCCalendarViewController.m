@@ -108,7 +108,7 @@
         else
             [self.delegate completedWithStartDate:endDate endDate:startDate];
     } else {
-        //Do something else if it's not selected.
+        [self.delegate completedWithNoSelection];
     }
     
     [calView removeFromSuperview];

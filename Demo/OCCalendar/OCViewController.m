@@ -100,6 +100,13 @@
     calVC = nil;
 }
 
+-(void) completedWithNoSelection{
+    [calVC.view removeFromSuperview];
+    calVC.delegate = nil;
+    [calVC release];
+    calVC = nil;
+}
+
 
 #pragma mark - 
 #pragma mark Prettifying Methods...
