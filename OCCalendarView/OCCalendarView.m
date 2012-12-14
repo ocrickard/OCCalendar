@@ -51,13 +51,15 @@
     endCellX = -1;
     endCellY = -1;
     
-    hDiff = 43;
+	
+	hDiff = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ? 41 : 43;
     vDiff = 30;
     
     selectionView = [[OCSelectionView alloc] initWithFrame:CGRectMake(66, 95, hDiff*7, vDiff*6)];
     [self addSubview:selectionView];
     
-    daysView = [[OCDaysView alloc] initWithFrame:CGRectMake(65, 98, hDiff*7, vDiff*6)];
+	float xpos = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ? 68 : 65;
+    daysView = [[OCDaysView alloc] initWithFrame:CGRectMake(xpos, 98, hDiff*7, vDiff*6)];
     [daysView setYear:currentYear];
     [daysView setMonth:currentMonth];
     [daysView resetRows];
@@ -375,12 +377,28 @@
 }
 
 - (void)drawRect:(CGRect)rect
-{    
+{
+	
+  //Assumes this code works on iPhone SDK 3.2 or higher..
+	
+  if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+  {
+	  [self renderCalendarViewForPhone];
+	  
+  }else{
+	  [self renderCalendarViewForPad];
+  }
+	
+}
+
+
+-(void) renderCalendarViewForPhone
+{
     //// Get day titles from current Locale
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     NSArray *dayTitles = [dateFormatter shortStandaloneWeekdaySymbols];
     NSArray *monthTitles = [dateFormatter standaloneMonthSymbols];
-            
+	
     //// General Declarations
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -394,8 +412,267 @@
     UIColor* boxStroke = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 0.59];
     
     //// Gradient Declarations
-    NSArray* gradient2Colors = [NSArray arrayWithObjects: 
-                                (id)darkColor.CGColor, 
+    NSArray* gradient2Colors = [NSArray arrayWithObjects:
+                                (id)darkColor.CGColor,
+                                (id)lightColor.CGColor, nil];
+    CGFloat gradient2Locations[] = {0, 1};
+    CGGradientRef gradient2 = CGGradientCreateWithColors(colorSpace, (CFArrayRef)gradient2Colors, gradient2Locations);
+    
+    //// Shadow Declarations
+    CGColorRef bigBoxInnerShadow = bigBoxInnerShadowColor.CGColor;
+    CGSize bigBoxInnerShadowOffset = CGSizeMake(0, 1);
+    CGFloat bigBoxInnerShadowBlurRadius = 1;
+    CGColorRef shadow = [UIColor blackColor].CGColor;
+    CGSize shadowOffset = CGSizeMake(-1, -0);
+    CGFloat shadowBlurRadius = 0;
+    CGColorRef shadow2 = [UIColor blackColor].CGColor;
+    CGSize shadow2Offset = CGSizeMake(1, 1);
+    CGFloat shadow2BlurRadius = 1;
+    CGColorRef backgroundShadow = [UIColor blackColor].CGColor;
+    CGSize backgroundShadowOffset = CGSizeMake(2, 3);
+    CGFloat backgroundShadowBlurRadius = 5;
+    
+    
+    //////// Draw background of popover
+    UIBezierPath* roundedRectanglePath = [UIBezierPath bezierPath];
+	
+
+	float arrowPosX = 208;
+	
+	if(arrowPosition == OCArrowPositionLeft) {
+		arrowPosX = 80;
+	} else if(arrowPosition == OCArrowPositionRight) {
+		arrowPosX = 323;
+	}
+    
+    if([daysView addExtraRow]) {
+        //NSLog(@"Added extra row");
+		
+		//bottom left corner
+        [roundedRectanglePath moveToPoint: CGPointMake(42, 267.42)];
+        [roundedRectanglePath addCurveToPoint: CGPointMake(52, 278.4) controlPoint1: CGPointMake(42, 273.49) controlPoint2: CGPointMake(46.48, 278.4)];
+		
+		//bottom right corner
+        [roundedRectanglePath addLineToPoint: CGPointMake(348.5, 278.4)];
+        [roundedRectanglePath addCurveToPoint: CGPointMake(358.5, 267.42) controlPoint1: CGPointMake(354.02, 278.4) controlPoint2: CGPointMake(358.5, 273.49)];
+		
+		//top right corner
+        [roundedRectanglePath addLineToPoint: CGPointMake(358.5, 53.9)];
+        [roundedRectanglePath addCurveToPoint: CGPointMake(348.5, 43.9) controlPoint1: CGPointMake(358.02, 48.38) controlPoint2: CGPointMake(354.5, 43.9)];
+		
+		if(arrowPosition != OCArrowPositionNone)
+		{
+			[roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX+13.5, 43.9)];
+			[roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX, 31.4)];
+			[roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX-13.5, 43.9)];			
+		}
+		
+		//top left corner
+        [roundedRectanglePath addLineToPoint: CGPointMake(52, 43.9)];
+        [roundedRectanglePath addCurveToPoint: CGPointMake(42, 53.9) controlPoint1: CGPointMake(46.48, 43.9) controlPoint2: CGPointMake(42, 48.38)];
+		
+        [roundedRectanglePath addLineToPoint: CGPointMake(42, 267.42)];
+    } else {
+		//bottom left corner
+        [roundedRectanglePath moveToPoint: CGPointMake(42, 246.4)];
+        [roundedRectanglePath addCurveToPoint: CGPointMake(52, 256.4) controlPoint1: CGPointMake(42, 251.92) controlPoint2: CGPointMake(46.48, 256.4)];
+		
+		//bottom right corner
+        [roundedRectanglePath addLineToPoint: CGPointMake(348.5, 256.4)];
+        [roundedRectanglePath addCurveToPoint: CGPointMake(358.5, 246.4) controlPoint1: CGPointMake(354.02, 256.4) controlPoint2: CGPointMake(358.5, 251.92)];
+		
+		//top right corner
+        [roundedRectanglePath addLineToPoint: CGPointMake(358.5, 53.9)];
+        [roundedRectanglePath addCurveToPoint: CGPointMake(348.5, 43.9) controlPoint1: CGPointMake(358.5, 48.38) controlPoint2: CGPointMake(354.5, 43.9)];
+		
+		if(arrowPosition != OCArrowPositionNone)
+		{
+			[roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX+13.5, 43.9)];
+			[roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX, 31.4)];
+			[roundedRectanglePath addLineToPoint: CGPointMake(arrowPosX-13.5, 43.9)];
+		}
+        [roundedRectanglePath addLineToPoint: CGPointMake(52, 43.9)];
+        [roundedRectanglePath addCurveToPoint: CGPointMake(42, 53.9) controlPoint1: CGPointMake(46.48, 43.9) controlPoint2: CGPointMake(42, 48.38)];
+        [roundedRectanglePath addLineToPoint: CGPointMake(42, 246.4)];
+        //NSLog(@"did not add extra row");
+    }
+    
+    [roundedRectanglePath closePath];
+    CGContextSaveGState(context);
+    CGContextSetShadowWithColor(context, backgroundShadowOffset, backgroundShadowBlurRadius, backgroundShadow);
+    [backgroundLightColor setFill];
+    [roundedRectanglePath fill];
+    
+    ////// background Inner Shadow
+    CGRect roundedRectangleBorderRect = CGRectInset([roundedRectanglePath bounds], -bigBoxInnerShadowBlurRadius, -bigBoxInnerShadowBlurRadius);
+    roundedRectangleBorderRect = CGRectOffset(roundedRectangleBorderRect, -bigBoxInnerShadowOffset.width, -bigBoxInnerShadowOffset.height);
+    roundedRectangleBorderRect = CGRectInset(CGRectUnion(roundedRectangleBorderRect, [roundedRectanglePath bounds]), -1, -1);
+    
+    UIBezierPath* roundedRectangleNegativePath = [UIBezierPath bezierPathWithRect: roundedRectangleBorderRect];
+    [roundedRectangleNegativePath appendPath: roundedRectanglePath];
+    roundedRectangleNegativePath.usesEvenOddFillRule = YES;
+    
+    CGContextSaveGState(context);
+    {
+        CGFloat xOffset = bigBoxInnerShadowOffset.width + round(roundedRectangleBorderRect.size.width);
+        CGFloat yOffset = bigBoxInnerShadowOffset.height;
+        CGContextSetShadowWithColor(context,
+                                    CGSizeMake(xOffset + copysign(0.1, xOffset), yOffset + copysign(0.1, yOffset)),
+                                    bigBoxInnerShadowBlurRadius,
+                                    bigBoxInnerShadow);
+        
+        [roundedRectanglePath addClip];
+        CGAffineTransform transform = CGAffineTransformMakeTranslation(-round(roundedRectangleBorderRect.size.width), 0);
+        [roundedRectangleNegativePath applyTransform: transform];
+        [[UIColor grayColor] setFill];
+        [roundedRectangleNegativePath fill];
+    }
+    CGContextRestoreGState(context);
+    
+    CGContextRestoreGState(context);
+    
+    [boxStroke setStroke];
+    roundedRectanglePath.lineWidth = 0.5;
+    [roundedRectanglePath stroke];
+    
+    
+    //Dividers
+    float addedHeight = ([daysView addExtraRow] ? 24 : 0);
+    for(int i = 0; i < dayTitles.count-1; i++) {
+        //// divider Drawing
+		float xpos = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ? 99 : 96;
+        UIBezierPath* dividerPath = [UIBezierPath bezierPathWithRect: CGRectMake(xpos+i*hDiff, 73.5, 0.5, 168+addedHeight)];
+        CGContextSaveGState(context);
+        CGContextSetShadowWithColor(context, shadowOffset, shadowBlurRadius, shadow);
+        [lineLightColor setFill];
+        [dividerPath fill];
+        CGContextRestoreGState(context);
+    }
+    
+    
+    //// Rounded Rectangle 2 Drawing
+    UIBezierPath* roundedRectangle2Path = [UIBezierPath bezierPath];
+    if([daysView addExtraRow]) {
+		//bottom left
+        [roundedRectangle2Path moveToPoint: CGPointMake(42, 267.42)];
+        [roundedRectangle2Path addCurveToPoint: CGPointMake(52, 278.4) controlPoint1: CGPointMake(42, 273.49) controlPoint2: CGPointMake(46.48, 278.4)];
+		//bottom right
+        [roundedRectangle2Path addLineToPoint: CGPointMake(348.5, 278.4)];
+        [roundedRectangle2Path addCurveToPoint: CGPointMake(358.5, 267.42) controlPoint1: CGPointMake(354.02, 278.4) controlPoint2: CGPointMake(358.5, 273.49)];
+		//top right
+        [roundedRectangle2Path addLineToPoint: CGPointMake(358.5, 53.9)];
+        [roundedRectangle2Path addCurveToPoint: CGPointMake(348.5, 43.9) controlPoint1: CGPointMake(358.02, 48.38) controlPoint2: CGPointMake(354.5, 43.9)];
+		
+		if(arrowPosition != OCArrowPositionNone)
+		{
+			[roundedRectangle2Path addLineToPoint: CGPointMake(arrowPosX+13.5, 43.9)];
+			[roundedRectangle2Path addLineToPoint: CGPointMake(arrowPosX, 31.4)];
+			[roundedRectangle2Path addLineToPoint: CGPointMake(arrowPosX-13.5, 43.9)];
+		}
+		//top left
+        [roundedRectangle2Path addLineToPoint: CGPointMake(52, 43.9)];
+        [roundedRectangle2Path addCurveToPoint: CGPointMake(42, 53.9) controlPoint1: CGPointMake(46.48, 43.9) controlPoint2: CGPointMake(42, 48.38)];
+        [roundedRectangle2Path addLineToPoint: CGPointMake(42, 267.42)];
+    } else {
+		//bottom left
+        [roundedRectangle2Path moveToPoint: CGPointMake(42, 246.4)];
+        [roundedRectangle2Path addCurveToPoint: CGPointMake(52, 256.4) controlPoint1: CGPointMake(42, 251.92) controlPoint2: CGPointMake(46.48, 256.4)];
+		//bottom right
+        [roundedRectangle2Path addLineToPoint: CGPointMake(348.5, 256.4)];
+        [roundedRectangle2Path addCurveToPoint: CGPointMake(358.5, 246.4) controlPoint1: CGPointMake(354.02, 256.4) controlPoint2: CGPointMake(358.5, 251.92)];
+		//top right
+        [roundedRectangle2Path addLineToPoint: CGPointMake(358.5, 53.9)];
+        [roundedRectangle2Path addCurveToPoint: CGPointMake(348.5, 43.9) controlPoint1: CGPointMake(358.5, 48.38) controlPoint2: CGPointMake(354.02, 43.9)];
+		
+		if(arrowPosition != OCArrowPositionNone)
+		{
+			[roundedRectangle2Path addLineToPoint: CGPointMake(arrowPosX+13.5, 43.9)];
+			[roundedRectangle2Path addLineToPoint: CGPointMake(arrowPosX, 31.4)];
+			[roundedRectangle2Path addLineToPoint: CGPointMake(arrowPosX-13.5, 43.9)];
+		}
+		//top left
+        [roundedRectangle2Path addLineToPoint: CGPointMake(52, 43.9)];
+        [roundedRectangle2Path addCurveToPoint: CGPointMake(42, 53.9) controlPoint1: CGPointMake(46.48, 43.9) controlPoint2: CGPointMake(42, 48.38)];
+        [roundedRectangle2Path addLineToPoint: CGPointMake(42, 246.4)];
+    }
+    [roundedRectangle2Path closePath];
+    CGContextSaveGState(context);
+    [roundedRectangle2Path addClip];
+    float endPoint = ([daysView addExtraRow] ? 278.4 : 256.4);
+    CGContextDrawLinearGradient(context, gradient2, CGPointMake(206.75, endPoint), CGPointMake(206.75, 31.4), 0);
+    CGContextRestoreGState(context);
+    
+    for(int i = 0; i < dayTitles.count; i++) {
+        //// dayHeader Drawing
+        CGContextSaveGState(context);
+        CGContextSetShadowWithColor(context, shadow2Offset, shadow2BlurRadius, shadow2);
+        CGRect dayHeaderFrame = CGRectMake(63+i*hDiff, 75, 30, 14); 
+        [[UIColor whiteColor] setFill];
+        [((NSString *)[dayTitles objectAtIndex:i]) drawInRect: dayHeaderFrame withFont: [UIFont fontWithName: @"Helvetica" size: 12] lineBreakMode: UILineBreakModeWordWrap alignment: UITextAlignmentCenter];
+        CGContextRestoreGState(context);
+    }
+    
+    int month = currentMonth;
+    int year = currentYear;
+    
+	NSString *monthTitle = [NSString stringWithFormat:@"%@ %d", [monthTitles objectAtIndex:(month - 1)], year];
+    
+    //// Month Header Drawing
+    CGContextSaveGState(context);
+    CGContextSetShadowWithColor(context, shadow2Offset, shadow2BlurRadius, shadow2);
+    CGRect textFrame = CGRectMake(94, 53, 220, 18);
+    [[UIColor whiteColor] setFill];
+    [monthTitle drawInRect: textFrame withFont: [UIFont fontWithName: @"Helvetica" size: 12] lineBreakMode: UILineBreakModeWordWrap alignment: UITextAlignmentCenter];
+    CGContextRestoreGState(context);
+    
+    //// backArrow Drawing
+    UIBezierPath* backArrowPath = [UIBezierPath bezierPath];
+    [backArrowPath moveToPoint: CGPointMake(66, 58.5)];
+    [backArrowPath addLineToPoint: CGPointMake(60, 62.5)];
+    [backArrowPath addCurveToPoint: CGPointMake(66, 65.5) controlPoint1: CGPointMake(60, 62.5) controlPoint2: CGPointMake(66, 65.43)];
+    [backArrowPath addCurveToPoint: CGPointMake(66, 58.5) controlPoint1: CGPointMake(66, 65.57) controlPoint2: CGPointMake(66, 58.5)];
+    [backArrowPath closePath];
+    [[UIColor whiteColor] setFill];
+    [backArrowPath fill];
+    
+    //// forwardArrow Drawing
+    UIBezierPath* forwardArrowPath = [UIBezierPath bezierPath];
+    [forwardArrowPath moveToPoint: CGPointMake(336.5, 58.5)];
+    [forwardArrowPath addLineToPoint: CGPointMake(342.5, 62)];
+    [forwardArrowPath addCurveToPoint: CGPointMake(336.5, 65.5) controlPoint1: CGPointMake(342.5, 62) controlPoint2: CGPointMake(336.5, 65.43)];
+    [forwardArrowPath addCurveToPoint: CGPointMake(336.5, 58.5) controlPoint1: CGPointMake(336.5, 65.57) controlPoint2: CGPointMake(336.5, 58.5)];
+    [forwardArrowPath closePath];
+    [[UIColor whiteColor] setFill];
+    [forwardArrowPath fill];
+    
+    //// Cleanup
+    CGGradientRelease(gradient2);
+    CGColorSpaceRelease(colorSpace);
+	
+}
+
+-(void) renderCalendarViewForPad
+{
+    //// Get day titles from current Locale
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    NSArray *dayTitles = [dateFormatter shortStandaloneWeekdaySymbols];
+    NSArray *monthTitles = [dateFormatter standaloneMonthSymbols];
+	
+    //// General Declarations
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    //// Color Declarations
+    UIColor* bigBoxInnerShadowColor = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 0.56];
+    UIColor* backgroundLightColor = [UIColor colorWithWhite:0.2 alpha: 1];
+    UIColor* lineLightColor = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 0.27];
+    UIColor* lightColor = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 0.15];
+    UIColor* darkColor = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 0.72];
+    UIColor* boxStroke = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 0.59];
+    
+    //// Gradient Declarations
+    NSArray* gradient2Colors = [NSArray arrayWithObjects:
+                                (id)darkColor.CGColor,
                                 (id)lightColor.CGColor, nil];
     CGFloat gradient2Locations[] = {0, 1};
     CGGradientRef gradient2 = CGGradientCreateWithColors(colorSpace, (CFArrayRef)gradient2Colors, gradient2Locations);
@@ -590,7 +867,10 @@
     //// Cleanup
     CGGradientRelease(gradient2);
     CGColorSpaceRelease(colorSpace);
+	
+	
 }
+
 
 - (void)dealloc {
     
