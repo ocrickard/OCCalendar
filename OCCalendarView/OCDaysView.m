@@ -21,7 +21,7 @@
         endCellX = 3;
         endCellY = 0;
         
-        hDiff = 43;
+		hDiff = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ? 41 : 43;
         vDiff = 30;
         
         self.backgroundColor = [UIColor clearColor];
