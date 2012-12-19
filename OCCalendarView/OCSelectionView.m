@@ -25,7 +25,7 @@
         endCellX = -1;
         endCellY = -1;
         
-        hDiff = 43;
+		hDiff = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ? 41 : 43;
         vDiff = 30;
         
         self.userInteractionEnabled = YES;
@@ -93,7 +93,8 @@
                 cornerRadius = 10.0;
             }
             //// selectedRect Drawing
-            UIBezierPath* selectedRectPath = [UIBezierPath bezierPathWithRoundedRect: CGRectMake(MIN(thisRowStartCell, thisRowEndCell)*hDiff, i*vDiff, (ABS(thisRowEndCell-thisRowStartCell))*hDiff+20, 21) cornerRadius: cornerRadius];
+			float width_offset= UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ? 25 : 20; //device specific width offset i.e., iPhone vs iPad
+            UIBezierPath* selectedRectPath = [UIBezierPath bezierPathWithRoundedRect: CGRectMake(MIN(thisRowStartCell, thisRowEndCell)*hDiff, i*vDiff, (ABS(thisRowEndCell-thisRowStartCell))*hDiff+width_offset, 21) cornerRadius: cornerRadius];
             CGContextSaveGState(context);
             [selectedRectPath addClip];
             CGContextDrawLinearGradient(context, gradient3, CGPointMake((MIN(thisRowStartCell, thisRowEndCell)+.5)*hDiff, (i+1)*vDiff), CGPointMake((MIN(thisRowStartCell, thisRowEndCell)+.5)*hDiff, i*vDiff), 0);

@@ -11,7 +11,8 @@
 typedef enum {
   OCArrowPositionLeft = -1,
   OCArrowPositionCentered = 0,
-  OCArrowPositionRight = 1
+  OCArrowPositionRight = 1,
+  OCArrowPositionNone = 99
 } OCArrowPosition;
 
 
