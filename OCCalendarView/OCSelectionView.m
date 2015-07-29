@@ -66,8 +66,8 @@
         int tempEnd = MAX(startCellY, endCellY);
         for(int i = tempStart; i <= tempEnd; i++) {
             //// selectedRect Drawing
-            int thisRowEndCell;
-            int thisRowStartCell;
+            int thisRowEndCell = 0;
+            int thisRowStartCell = 0;
             if(startCellY == i) {
                 thisRowStartCell = startCellX;
                 if (startCellY > endCellY) {
