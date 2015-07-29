@@ -38,12 +38,12 @@
   if(self) {
     self.backgroundColor = [UIColor clearColor];
     
-    calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
 		
-    NSUInteger unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
+    NSUInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth |  NSCalendarUnitDay;
     NSDateComponents *dateParts = [calendar components:unitFlags fromDate:[NSDate date]];
-    currentMonth = [dateParts month];
-    currentYear = [dateParts year];
+    currentMonth = (int)[dateParts month];
+    currentYear = (int)[dateParts year];
     
     arrowPosition = arrowPos;
     startCellX = -1;
@@ -167,12 +167,11 @@
 	[dateParts setYear:year];
 	[dateParts setDay:1];
 	NSDate *dateOnFirst = [calendar dateFromComponents:dateParts];
-	[dateParts release];
-	NSDateComponents *weekdayComponents = [calendar components:NSWeekdayCalendarUnit fromDate:dateOnFirst];
-	int weekdayOfFirst = [weekdayComponents weekday];	
+	NSDateComponents *weekdayComponents = [calendar components:NSCalendarUnitWeekday fromDate:dateOnFirst];
+	int weekdayOfFirst = (int)[weekdayComponents weekday];
     
-	int numDaysInMonth = [calendar rangeOfUnit:NSDayCalendarUnit 
-										inUnit:NSMonthCalendarUnit 
+	int numDaysInMonth = (int)[calendar rangeOfUnit:NSCalendarUnitDay
+										inUnit:NSCalendarUnitMonth 
                                        forDate:dateOnFirst].length;
     
     if(startPoint.y == 0 && startPoint.x+1 < weekdayOfFirst) {
@@ -198,7 +197,7 @@
         }
     }
     
-    NSDateComponents *comps = [[[NSDateComponents alloc] init] autorelease];
+    NSDateComponents *comps = [[NSDateComponents alloc] init];
     [comps setDay:day];
     [comps setMonth:month];
     [comps setYear:year];
@@ -224,12 +223,11 @@
 	[dateParts setYear:year];
 	[dateParts setDay:1];
 	NSDate *dateOnFirst = [calendar dateFromComponents:dateParts];
-	[dateParts release];
-	NSDateComponents *weekdayComponents = [calendar components:NSWeekdayCalendarUnit fromDate:dateOnFirst];
-	int weekdayOfFirst = [weekdayComponents weekday];	
+	NSDateComponents *weekdayComponents = [calendar components:NSCalendarUnitWeekday fromDate:dateOnFirst];
+	int weekdayOfFirst = (int)[weekdayComponents weekday];
     
-	int numDaysInMonth = [calendar rangeOfUnit:NSDayCalendarUnit 
-										inUnit:NSMonthCalendarUnit 
+	int numDaysInMonth = (int)[calendar rangeOfUnit:NSCalendarUnitDay
+										inUnit:NSCalendarUnitMonth 
                                        forDate:dateOnFirst].length;
 	if(endPoint.y == 0 && endPoint.x+1 < weekdayOfFirst) {
         day = endPoint.x - weekdayOfFirst + 2;
@@ -256,7 +254,7 @@
         }
     }
         
-    NSDateComponents *comps = [[[NSDateComponents alloc] init] autorelease];
+    NSDateComponents *comps = [[NSDateComponents alloc] init];
     [comps setDay:day];
     [comps setMonth:month];
     [comps setYear:year];
@@ -268,13 +266,13 @@
 - (void)setStartDate:(NSDate *)sDate {
     //NSLog(@"setStartDate");
     
-    NSDateComponents *sComponents = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:sDate];
+    NSDateComponents *sComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:sDate];
     
     if([sComponents month] != currentMonth) {
-        currentMonth = [sComponents month];
+        currentMonth = (int)[sComponents month];
     }
     if([sComponents year] != currentYear) {
-        currentYear = [sComponents year];
+        currentYear = (int)[sComponents year];
     }
     int day = 1;
     int month = currentMonth;
@@ -286,12 +284,11 @@
 	[dateParts setYear:year];
 	[dateParts setDay:1];
 	NSDate *dateOnFirst = [calendar dateFromComponents:dateParts];
-	[dateParts release];
-	NSDateComponents *weekdayComponents = [calendar components:NSWeekdayCalendarUnit fromDate:dateOnFirst];
-	int weekdayOfFirst = [weekdayComponents weekday];	
+	NSDateComponents *weekdayComponents = [calendar components:NSCalendarUnitWeekday fromDate:dateOnFirst];
+	int weekdayOfFirst = (int)[weekdayComponents weekday];
     
-	int numDaysInMonth = [calendar rangeOfUnit:NSDayCalendarUnit 
-										inUnit:NSMonthCalendarUnit 
+	int numDaysInMonth = (int)[calendar rangeOfUnit:NSCalendarUnitDay
+										inUnit:NSCalendarUnitMonth 
                                        forDate:dateOnFirst].length;
     
     BOOL breakLoop = NO;
@@ -322,13 +319,13 @@
 
 - (void)setEndDate:(NSDate *)eDate {
     //NSLog(@"setEndDate");
-    NSDateComponents *eComponents = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:eDate];
+    NSDateComponents *eComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:eDate];
     
     if([eComponents month] != currentMonth) {
-        currentMonth = [eComponents month];
+        currentMonth = (int)[eComponents month];
     }
     if([eComponents year] != currentYear) {
-        currentYear = [eComponents year];
+        currentYear = (int)[eComponents year];
     }
     int day = 1;
     int month = currentMonth;
@@ -340,12 +337,11 @@
 	[dateParts setYear:year];
 	[dateParts setDay:1];
 	NSDate *dateOnFirst = [calendar dateFromComponents:dateParts];
-	[dateParts release];
-	NSDateComponents *weekdayComponents = [calendar components:NSWeekdayCalendarUnit fromDate:dateOnFirst];
-	int weekdayOfFirst = [weekdayComponents weekday];	
+	NSDateComponents *weekdayComponents = [calendar components:NSCalendarUnitWeekday fromDate:dateOnFirst];
+	int weekdayOfFirst = (int)[weekdayComponents weekday];
     
-	int numDaysInMonth = [calendar rangeOfUnit:NSDayCalendarUnit 
-										inUnit:NSMonthCalendarUnit 
+	int numDaysInMonth = (int)[calendar rangeOfUnit:NSCalendarUnitDay 
+										inUnit:NSCalendarUnitMonth 
                                        forDate:dateOnFirst].length;
     
     BOOL breakLoop = NO;
@@ -608,7 +604,16 @@
         CGContextSetShadowWithColor(context, shadow2Offset, shadow2BlurRadius, shadow2);
         CGRect dayHeaderFrame = CGRectMake(63+i*hDiff, 75, 30, 14); 
         [[UIColor whiteColor] setFill];
-        [((NSString *)[dayTitles objectAtIndex:i]) drawInRect: dayHeaderFrame withFont: [UIFont fontWithName: @"Helvetica" size: 12] lineBreakMode: UILineBreakModeWordWrap alignment: UITextAlignmentCenter];
+        UIFont *font = [UIFont fontWithName:@"Helvetica" size:12.0];
+        NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+        paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+        paragraphStyle.alignment = NSTextAlignmentCenter;
+        NSDictionary *attrsDictionary = @{NSParagraphStyleAttributeName : paragraphStyle,
+                                          NSFontAttributeName           : font,
+                                          NSForegroundColorAttributeName : [UIColor whiteColor]};
+        
+        [((NSString *)[dayTitles objectAtIndex:i]) drawAtPoint:dayHeaderFrame.origin withAttributes:attrsDictionary];
+        
         CGContextRestoreGState(context);
     }
     
@@ -622,7 +627,15 @@
     CGContextSetShadowWithColor(context, shadow2Offset, shadow2BlurRadius, shadow2);
     CGRect textFrame = CGRectMake(94, 53, 220, 18);
     [[UIColor whiteColor] setFill];
-    [monthTitle drawInRect: textFrame withFont: [UIFont fontWithName: @"Helvetica" size: 12] lineBreakMode: UILineBreakModeWordWrap alignment: UITextAlignmentCenter];
+    UIFont *font = [UIFont fontWithName:@"Helvetica" size:12.0];
+    NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+    paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+    paragraphStyle.alignment = NSTextAlignmentCenter;
+    NSDictionary *attrsDictionary = @{NSParagraphStyleAttributeName : paragraphStyle,
+                                      NSFontAttributeName           : font,
+                                      NSForegroundColorAttributeName : [UIColor whiteColor]};
+    
+    [monthTitle drawAtPoint:textFrame.origin withAttributes:attrsDictionary];
     CGContextRestoreGState(context);
     
     //// backArrow Drawing
@@ -827,7 +840,15 @@
         CGContextSetShadowWithColor(context, shadow2Offset, shadow2BlurRadius, shadow2);
         CGRect dayHeaderFrame = CGRectMake(60+i*hDiff, 75, 30, 14);
         [[UIColor whiteColor] setFill];
-        [((NSString *)[dayTitles objectAtIndex:i]) drawInRect: dayHeaderFrame withFont: [UIFont fontWithName: @"Helvetica" size: 12] lineBreakMode: UILineBreakModeWordWrap alignment: UITextAlignmentCenter];
+        UIFont *font = [UIFont fontWithName:@"Helvetica" size:12.0];
+        NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+        paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+        paragraphStyle.alignment = NSTextAlignmentCenter;
+        NSDictionary *attrsDictionary = @{NSParagraphStyleAttributeName : paragraphStyle,
+                                          NSFontAttributeName           : font,
+                                          NSForegroundColorAttributeName : [UIColor whiteColor]};
+        
+        [((NSString *)[dayTitles objectAtIndex:i]) drawAtPoint:dayHeaderFrame.origin withAttributes:attrsDictionary];
         CGContextRestoreGState(context);
     }
     
@@ -841,7 +862,15 @@
     CGContextSetShadowWithColor(context, shadow2Offset, shadow2BlurRadius, shadow2);
     CGRect textFrame = CGRectMake(94, 53, 220, 18);
     [[UIColor whiteColor] setFill];
-    [monthTitle drawInRect: textFrame withFont: [UIFont fontWithName: @"Helvetica" size: 12] lineBreakMode: UILineBreakModeWordWrap alignment: UITextAlignmentCenter];
+    UIFont *font = [UIFont fontWithName:@"Helvetica" size:12.0];
+    NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+    paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+    paragraphStyle.alignment = NSTextAlignmentCenter;
+    NSDictionary *attrsDictionary = @{NSParagraphStyleAttributeName : paragraphStyle,
+                                      NSFontAttributeName           : font,
+                                      NSForegroundColorAttributeName : [UIColor whiteColor]};
+    
+    [monthTitle drawAtPoint:textFrame.origin withAttributes:attrsDictionary];
     CGContextRestoreGState(context);
     
     //// backArrow Drawing
@@ -869,16 +898,6 @@
     CGColorSpaceRelease(colorSpace);
 	
 	
-}
-
-
-- (void)dealloc {
-    
-    [selectionView release];
-    [calendar release];
-    
-    [super dealloc];
-    
 }
 
 @end
