@@ -20,7 +20,7 @@
 @end
 
 @interface OCCalendarViewController : UIViewController <UIGestureRecognizerDelegate> {
-    id <OCCalendarDelegate> calenderDelegate;
+    id <OCCalendarDelegate> calendarDelegate;
     
     UILabel *toolTipLabel;
     OCCalendarView *calView;
